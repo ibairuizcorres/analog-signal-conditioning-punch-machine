@@ -26,7 +26,7 @@ While my teammates focused on the mechanical frames, material tests, and vibrati
 In industrial factories, monitoring motor current is very important to find machine faults and protect the system from overloads. The main goal of this project was to measure the real-time current of the punching machine's motor during its work cycle. In this case, the objective of measuring the current was to stop the machine if the power exceeds a safe limit. This current is read by an Arduino Uno R3, which controls a relay to switch the motor on or off. Additionally, the project required the possibility to change the motor's rotation direction. This specific part will be explained in broad strokes because it was a shared task with my team.
 
 To do this, I designed and built an electronic system with three main parts:
-* **Symmetric Power Supply:** A stable +/- 12V power supply. The +12V rail powers the DC motor and the positive analog rail, while the -12V rail is used for the negative analog rail of the operational amplifiers.
+* **Symmetric Power Supply:** A stable ±12V power supply. The +12V rail powers the DC motor and the positive analog rail, while the -12V rail is used for the negative analog rail of the operational amplifiers.
 * **Signal Conditioning:** Reading the differential voltage from a shunt resistor and amplifying it so the microcontroller can read it and make control decisions based on this measurement.
 * **Control Logic:** Processing the signal with an Arduino to monitor the machine and filtering the electrical noise using software.
 
@@ -38,9 +38,9 @@ We selected the following hardware components and parameters to make the system 
 
 | System Component | Technical Specification | Primary Role / Range |
 | :--- | :--- | :--- |
-| **Main Actuator** | Brush DC Motor (12V, 20W) | Drives the mechanical system of the machine. |
-| **Shunt Resistor** | 0.1 Ohm Precision Resistor (2A / 200mV HOBUT) | Generates a small voltage proportional to the motor current. |
-| **Analog Power Supply** | +/- 12V Symmetric power suply (regulated from 230V AC) | Provides clean power to the analog amplifiers. |
-| **Differential Stage** | AMP03 Difference Amplifier (Gain = 1) | Reads the voltage across the shunt and removes common-mode noise. |
-| **Gain Stage** | uA741CP Operational Amplifier (Gain = 25) | Amplifies the analog signal to a 0-5V range. |
+| **Main Actuator** | (12V, 20W) Brush DC Motor | Drives the mechanical system of the machine. |
+| **Shunt Resistor** | 0.1Ω Shunt Resistor (2A / 200mV HOBUT) | Generates a small voltage drop proportional to the motor current. |
+| **Analog Power Supply** | ±12V Symmetric power supply (regulated from 230V AC) | Provides clean power to the analog amplifiers and the motor. |
+| **Differential Stage** | AMP03 Difference Amplifier | Reads the voltage across the shunt and removes common-mode noise. |
+| **Gain Stage** | uA741CP Operational Amplifier | Is configured to amplifie the analog signal to a 0-5V range. |
 | **Control Unit** | Arduino Uno R3 | Reads the analog signal and filters the noise using code. |
