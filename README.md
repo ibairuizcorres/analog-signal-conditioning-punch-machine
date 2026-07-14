@@ -4,9 +4,9 @@ This project covers the design, calculation, and implementation of the power sup
 
 ## Project Context & My Role
 
-This project was a multidisciplinary team challenge. The main objective was to design and build a fully functional, scaled prototype of an industrial punching machine[cite: 102]. The project integrated several engineering fields:
-* **Mechanical Design:** Creating the 3D model in SolidWorks and optimizing the structure[cite: 51].
-* **Materials & Physics:** Studying cutting forces, shear strength, and calculating tool wear in MATLAB[cite: 51].
+This project was a multidisciplinary team challenge. The main objective was to design and build a fully functional, scaled prototype of an industrial punching machine. The project integrated several engineering fields:
+* **Mechanical Design:** Creating the 3D model in SolidWorks and optimizing the structure.
+* **Materials & Physics:** Studying cutting forces, shear strength, and calculating tool wear in MATLAB.
 * **Signal Analysis:** Capturing and analyzing machine vibrations using Fourier Transforms (FFT) in MATLAB.
 * **Electrical & Control:** Designing the power supply, analog conditioning circuits, and programming the microcontrollers.
 
@@ -35,8 +35,8 @@ We selected the following hardware components and parameters to make the system 
 | System Component | Technical Specification | Primary Role / Range |
 | :--- | :--- | :--- |
 | **Main Actuator** | Brush DC Motor (12V, 20W) | Drives the mechanical system of the machine. |
-| **Shunt Resistor** | 0.1 Ohm Precision Resistor (2A / 200mV HOBUT) | Generates a small voltage proportional to the motor current[cite: 252]. |
-| **Analog Power Supply** | ±12V Symmetric PSU (regulated from 230V AC) | Provides clean power to the analog amplifiers[cite: 102]. |
-| **Differential Stage** | AMP03 Difference Amplifier (Gain = 1) | Reads the voltage across the shunt and removes common-mode noise[cite: 264, 279]. |
-| **Gain Stage** | uA741CP Operational Amplifier (Gain = 25) | Amplifies the analog signal to a 0-5V range[cite: 354, 379]. |
+| **Shunt Resistor** | 0.1 Ohm Precision Resistor (2A / 200mV HOBUT) | Generates a small voltage proportional to the motor current. |
+| **Analog Power Supply** | ±12V Symmetric PSU (regulated from 230V AC) | Provides clean power to the analog amplifiers. |
+| **Differential Stage** | AMP03 Difference Amplifier (Gain = 1) | Reads the voltage across the shunt and removes common-mode noise. |
+| **Gain Stage** | uA741CP Operational Amplifier (Gain = 25) | Amplifies the analog signal to a 0-5V range. |
 | **Control Unit** | Arduino Uno R3 | Reads the analog signal and filters the noise using code. |
