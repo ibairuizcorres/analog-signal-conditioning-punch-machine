@@ -3,8 +3,8 @@
 This project covers the design, calculation, and implementation of the power supply that feeds a data acquisition and control system for a scaled industrial punching machine. The development focuses on the electrical and electronic hardware. It solves the problem of measuring a DC motor's current in a noisy environment using analog electronics and digital processing.
 
 <p align="center">
-  <img src="4_Media/punching_machine_prototype.jpg" alt="Prototype side" width="45%">
-  <img src="4_Media/punching_machine.jpg" alt="Prototype front" width="20%">
+  <img src="4_Media/punching_machine_prototype.jpg" alt="Prototype side" width="35%">
+  <img src="4_Media/punching_machine.jpg" alt="Prototype front" width="35%">
 </p>
 
 ## Project Context & My Role
