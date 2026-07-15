@@ -52,7 +52,7 @@ We selected the following hardware components and parameters to make the system 
 In this section is going to be shown the entire calculation, design and construction of the punching machine's power supply. 
 
 <p align="center">
-  <img src="4_Media/power_supplyer.jpg" alt="Symmetric Power Supply" width="50%">
+  <img src="4_Media/power_supplyer.jpg" alt="Symmetric Power Supply" width="42%">
 </p>
 
 First of all is important to know that this power supply is different from standard ones. In this case, the power supply provides a +12/-12V, that makes a 24V of voltage drop. But, why is this configuration used instead of a +12V/0V one? With that configuration, the motor can be supplied with a 12V voltage and apparently the two op-amps too. 
@@ -60,6 +60,13 @@ First of all is important to know that this power supply is different from stand
 Well, these op-amps, which are going to be introduced in the Section 4, are a common type known by the name of non rail-to-rail. This means that the op-amp output voltage can't be the same as the op-amp minimum supply voltage. Moreover, the voltage will never reach that minimum voltage because of the saturation voltage of these op-amps. Normally, this saturation voltage is about 1.5 and 2V, so, to get a 0-12V output from the amplifiers, a -2/12V power supply is needed.
 
 ### 3.1. Block Diagram & Operating Principle
+
+To start understanding more about the power supply, it is neecsary to know one difference. Generally, in our lives we use two types of power supplies. 
+
+* **Lineal DC power supply:** The simplest are the linear power supplies. These use transformers to reduce the AC voltage from the network. To convert that AC voltage into a DC one, bridge rectifier is used, whose function is to make the AC sinusoidal wave a full positive sinuidal wave. With that wave, a capacitor can cover the gap between the waves, getting rippled DC voltage. 
+
+To get the pure DC signal, linear voltage regulators are used these are dynamic resistors that dissipate excess voltage as heat, maintaining a constant output despite input or load variations.
+
 
 ### 3.2. Component Selection & Calculations
 
