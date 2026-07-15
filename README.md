@@ -61,12 +61,15 @@ Well, these op-amps, which are going to be introduced in the Section 4, are a co
 
 ### 3.1. Block Diagram & Operating Principle
 
-To start understanding more about the power supply, it is neecsary to know one difference. Generally, in our lives we use two types of power supplies. 
+To start understanding more about the power supply, it is necessary to know one difference. Generally, in our lives we use two types of power supplies. 
 
-* **Lineal DC power supply:** The simplest are the linear power supplies. These use transformers to reduce the AC voltage from the network. To convert that AC voltage into a DC one, bridge rectifier is used, whose function is to make the AC sinusoidal wave a full positive sinuidal wave. With that wave, a capacitor can cover the gap between the waves, getting rippled DC voltage. 
+* **Linear DC power supply:** The simplest power supplies are the linear ones. These use transformers to reduce the AC voltage from the network. To convert that AC voltage into a DC one, a bridge rectifier is used, whose function is to make the AC sinusoidal wave a full positive sinusoidal wave. With that wave, a capacitor can cover the gap between the waves, getting rippled DC voltage. To get the pure DC signal, linear voltage regulators are used, these are dynamic resistors that dissipate excess voltage as heat, maintaining a constant output despite input or load variations.
 
-To get the pure DC signal, linear voltage regulators are used these are dynamic resistors that dissipate excess voltage as heat, maintaining a constant output despite input or load variations.
+The inconvenience of this type is that all the excess voltage is dissipated as heat. The dissipated power is defined by the equation: P = ΔV * I, so if the required output voltage is 12V and the input voltage is about 19V defined by the output of the rippled capacitor and the connected load consumes about 1A, the dissipated power as heat is going to be P = (19-12) * 1 = 7W. 
 
+* **Switching DC power supply:** They are the modern ones, allow the user to reach high output powers generating low heat dissipation. they are the most used power supplies, from the PC's power supply to a electric car one.  I could go on and on explaining these ones but that could be enough for another article, so, what type has been chosen in this project?
+
+The chosen one is the linear DC power supply because of its simplicity and the low noise generated. The switching ones, are more complex to understand and emit much noise compared to the linear ones.
 
 ### 3.2. Component Selection & Calculations
 
