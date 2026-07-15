@@ -47,7 +47,13 @@ We selected the following hardware components and parameters to make the system 
 
 ## 3. Symmetric Power Supply Design (±12V)
 
-In this section is going to be shown the entire calculation, design and construction of the punching machine's power supply. First of all is important to know that this power supply is different from standard ones. In this case, the power supply provides a +12/-12V, that makes a 24V of voltage drop. But, why is this configuration used instead of a +12V/0V one? With that configuration, the motor can be supplied with a 12V voltage and apparently the two op-amps too. 
+In this section is going to be shown the entire calculation, design and construction of the punching machine's power supply. 
+
+<p align="center">
+  <img src="4_Media/power_supplyer.jpg" alt="Symmetric Power Supply" width="40%">
+</p>
+
+First of all is important to know that this power supply is different from standard ones. In this case, the power supply provides a +12/-12V, that makes a 24V of voltage drop. But, why is this configuration used instead of a +12V/0V one? With that configuration, the motor can be supplied with a 12V voltage and apparently the two op-amps too. 
 
 Well, these op-amps, which are going to be introduced in the Section 4, are a common type known by the name of non rail-to-rail. This means that the op-amp output voltage can't be the same as the op-amp minimum supply voltage. Moreover, the voltage will never reach that minimum voltage because of the saturation voltage of these op-amps. Normally, this saturation voltage is about 1.5 and 2V, so, to get a 0-12V output from the amplifiers, a -2/12V power supply is needed.
 
