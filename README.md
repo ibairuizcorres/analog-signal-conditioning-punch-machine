@@ -40,8 +40,8 @@ We selected the following hardware components and parameters to make the system 
 
 | System Component | Technical Specification | Primary Role / Range |
 | :--- | :--- | :--- |
-| **Main Actuator** | (12V, 20W) Brush DC Motor | Drives the mechanical system of the machine. |
-| **Shunt Resistor** | 0.1Ω Shunt Resistor (2A / 200mV HOBUT) | Generates a small voltage drop proportional to the motor current. |
+| **Main Actuator** | 12V, 20W Brush DC Motor | Drives the mechanical system of the machine. |
+| **Shunt Resistor** | 2A / 200mV 0.1Ω Shunt Resistor | Generates a small voltage drop proportional to the motor current. |
 | **Analog Power Supply** | ±12V Symmetric power supply (regulated from 230V AC) | Provides clean power to the analog amplifiers and the motor. |
 | **Differential Stage** | AMP03 Difference Amplifier | Reads the voltage across the shunt and removes common-mode noise. |
 | **Gain Stage** | uA741CP Operational Amplifier | Is configured to amplifie the analog signal to a 0-5V range. |
@@ -65,7 +65,9 @@ To start understanding more about the power supply, it is necessary to know one 
 
 * **Linear DC power supply:** The simplest power supplies are the linear ones. These use transformers to reduce the AC voltage from the network. To convert that AC voltage into a DC one, a bridge rectifier is used, whose function is to make the AC sinusoidal wave a full positive sinusoidal wave. With that wave, a capacitor can cover the gap between the waves, getting rippled DC voltage. To get the pure DC signal, linear voltage regulators are used, these are dynamic resistors that dissipate excess voltage as heat, maintaining a constant output despite input or load variations.
 
-The inconvenience of this type is that all the excess voltage is dissipated as heat. The dissipated power is defined by the equation: P = ΔV * I, so if the required output voltage is 12V and the input voltage is about 19V defined by the output of the rippled capacitor and the connected load consumes about 1A, the dissipated power as heat is going to be P = (19-12) * 1 = 7W. 
+The inconvenience of this type is that all the excess voltage is dissipated as heat. The dissipated power is defined by the equation $P = \Delta V \cdot I$. So, if the required output voltage is 12V, the input voltage is about 19V defined by the output of the rippled capacitor, and the connected load consumes about 1A, the dissipated power as heat is going to be:
+
+$$P = (19 - 12) \cdot 1 = 7\text{W}$$
 
 * **Switching DC power supply:** They are the modern ones, allow the user to reach high output powers generating low heat dissipation. they are the most used power supplies, from the PC's power supply to a electric car one.  I could go on and on explaining these ones but that could be enough for another article, so, what type has been chosen in this project?
 
