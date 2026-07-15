@@ -65,9 +65,25 @@ Well, these op-amps, which are going to be introduced in the Section 4, are a co
 
 To start understanding more about the power supply, it is necessary to know one difference. Generally, in our lives we use two types of power supplies. 
 
-* **Linear DC power supply:** The simplest power supplies are the linear ones. These use transformers to reduce the AC voltage from the network. To convert that AC voltage into a DC one, a bridge rectifier is used, whose function is to make the AC sinusoidal wave a full positive sinusoidal wave. With that wave, a capacitor can cover the gap between the waves, getting rippled DC voltage. To get the pure DC signal, linear voltage regulators are used, these are dynamic resistors that dissipate excess voltage as heat, maintaining a constant output despite input or load variations.
+* **Linear DC power supply:** The simplest power supplies are the linear ones. These use transformers to reduce the AC voltage from the network. To convert that AC voltage into a DC one, a bridge rectifier is used, whose function is to make the AC sinusoidal wave a full positive sinusoidal wave.
 
-The inconvenience of this type is that all the excess voltage is dissipated as heat. The dissipated power is defined by the equation $P = \Delta V \cdot I$. So, if the required output voltage is 12V, the input voltage is about 19V defined by the output of the rippled capacitor, and the connected load consumes about 1A, the dissipated power as heat is going to be:
+<p align="center">
+  <img src="4_Media/rectified_output_no_filter.png" alt="Full-wave rectified signal without filtering" width="65%">
+</p>
+
+With that wave, a capacitor can cover the gap between the waves, getting rippled DC voltage.
+
+<p align="center">
+  <img src="4_Media/ripple_voltage_waveform.jpg" alt="Ripple voltage waveform showing capacitor discharge" width="65%">
+</p>
+
+To get the pure DC signal, linear voltage regulators are used, these are dynamic resistors that dissipate excess voltage as heat, maintaining a constant output despite input or load variations.
+
+<p align="center">
+  <img src="4_Media/filtering_stage_output.png" alt="Filtered DC voltage transient and steady state" width="65%">
+</p>
+
+The inconvenience of this type is that all the excess voltage is dissipated as heat. The dissipated power is defined by the equation $P = \Delta V \cdot I$. So, if the required output voltage is 12V and the input voltage is about 19V defined by the output of the rippled capacitor and the connected load consumes about 1A, the dissipated power as heat is going to be:
 
 $$P = (19 - 12) \cdot 1 = 7\text{W}$$
 
