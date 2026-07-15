@@ -38,7 +38,7 @@ To do this, I designed and built an electronic system with three main parts:
 
 We selected the following hardware components and parameters to make the system accurate:
 
-| System Component | Technical Specification | Primary Role / Range |
+| System Component | Technical Specification | Primary Role |
 | :--- | :--- | :--- |
 | **Main Actuator** | 12V, 20W Brush DC Motor | Drives the mechanical system of the machine. |
 | **Shunt Resistor** | 2A / 200mV 0.1Ω Shunt Resistor | Generates a small voltage drop proportional to the motor current. |
