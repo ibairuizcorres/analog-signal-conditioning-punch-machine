@@ -74,7 +74,7 @@ To start understanding more about the power supply, it is necessary to know one 
 With that wave, a capacitor can cover the gap between the waves, getting rippled DC voltage.
 
 <p align="center">
-  <img src="4_Media/ripple_voltage_waveform.png" alt="Ripple voltage waveform showing capacitor discharge" width="65%">
+  <img src="4_Media/ripple_voltage_waveform.PNG" alt="Ripple voltage waveform showing capacitor discharge" width="65%">
 </p>
 
 To get the pure DC signal, linear voltage regulators are used, these are dynamic resistors that dissipate excess voltage as heat, maintaining a constant output despite input or load variations.
