@@ -93,7 +93,7 @@ The chosen one is the linear DC power supply because of its simplicity and the l
 
 ### 3.2. Component Selection & Calculations
 
-To build a reliable and robust system, the physical power supply was assembled as a custom shield that sits directly on top of the control stack. This design keeps the wiring clean and minimizes the footprint inside the machine.
+To build a reliable system, the physical power supply was assembled designed for constant and high-stress operation. This means that all the chosen components have been oversized to promise a long working time. This section explains which components were selected and why, along with some calculations for the oversizing.
 
 <p align="center">
   <img src="4_Media/assembled_power_supply_shield.jpg" alt="Assembled Power Supply Shield" width="50%">
@@ -107,11 +107,11 @@ The nominal current consumed by the motor under full load is calculated as follo
 
 $$I_{\text{nominal}} = \frac{P}{V} = \frac{20\text{ W}}{12\text{ V}} \approx 1.67\text{ A}$$
 
-While a standard 1A or 1.5A regulator might seem sufficient for the electronic stages, brush DC motors demand significantly higher inrush currents during startup and transient load peaks. Using a standard regulator would trigger thermal shutdown or cause severe voltage drops. 
+A standard 1A or 1.5A regulator might seem sufficient for the electronic stages but brush DC motors require significantly higher currents during startup and load peaks. Using a standard regulator would cause severe voltage drops and the sistem short-life. 
 
-For this reason, we selected the following regulators:
+For this reason, are selected the following regulators:
 
-* **LM1085IT-12 (+12V Rail):** This is a Low Dropout (LDO) regulator rated for up to 3A. It provides a substantial safety margin for our system:
+* **LM1085IT-12 (+12V Rail):** This is a Low Dropout regulator rated for up to 3A. It provides a substantial safety margin for our system:
 
 $$\text{Safety Margin} = \frac{3\text{ A}}{1.67\text{ A}} \approx 1.8$$
 
