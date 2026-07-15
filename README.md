@@ -123,8 +123,10 @@ This 80% current headroom allows the regulator to easily handle the motor's star
 
 To achieve a clean DC output and shield the sensitive analog signals from motor noise, the following passive components were selected:
 
-* **Main Filtering (2x 3300uF, 25V Capacitors):** These large electrolytic capacitors act as the primary energy reservoir to smooth out the rectified AC wave. A 25V voltage rating was chosen to provide a safe operating margin above our 19V unregulated input.
-* **Transient Decoupling (2x 27uF, 25V Capacitors):** Placed at the output of the regulators to stabilize the control loops and improve transient response when the motor starts or stops.
-* **High-Frequency Bypass (2x 100nF Ceramic Discs):** These small ceramic capacitors filter out high-frequency electromagnetic interference (EMI) and prevent high-frequency oscillations in the regulators.
-* **Status Indicators (2x Red LEDs):** Tied to the positive and negative rails with current-limiting resistors to serve as a hardware diagnostic tool, giving immediate visual confirmation that both symmetric power rails are active.
-* **Phoenix Screw Terminals:** Added to provide secure, low-resistance physical connections for the power input and output lines, avoiding loose wiring contacts in a mechanical environment subject to machine vibrations.
+| Component | Technical Specification | Primary Role |
+| :--- | :--- | :--- |
+| **Main Filtering** | 2x 3300μF, 25V Capacitors | These large electrolytic capacitors act as the primary energy reservoir to smooth out the rectified AC wave. A 25V voltage rating was chosen to provide a safe operating margin above our 19V unregulated input. |
+| **Transient Decoupling** | 2x 27μF, 25V Capacitors | Placed at the output of the regulators to stabilize the control loops and improve transient response when the motor starts or stops. |
+| **High-Frequency Bypass** | 2x 100nF Ceramic Discs | These small ceramic capacitors filter out high-frequency electromagnetic interference (EMI) and prevent high-frequency oscillations in the regulators. |
+| **Status Indicators** | 2x Red LEDs | Tied to the positive and negative rails with current-limiting resistors to serve as a hardware diagnostic tool, giving immediate visual confirmation that both symmetric power rails are active. |
+| **Phoenix Screw Terminals** | Screw terminal blocks | Added to provide secure, low-resistance physical connections for the power input and output lines, avoiding loose wiring contacts in a mechanical environment subject to machine vibrations. |
