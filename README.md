@@ -36,7 +36,7 @@ To do this, I designed and built an electronic system with three main parts:
 
 ## 2. Technical Specifications
 
-We selected the following hardware components and parameters to make the system accurate:
+It was selected the following hardware components and parameters to make the system accurate:
 
 | System Component | Technical Specification | Primary Role |
 | :--- | :--- | :--- |
@@ -103,19 +103,23 @@ To build a reliable system, the physical power supply was assembled designed for
 
 The component selection was driven by the power requirements of our main actuator (the 12V, 20W brush DC motor). 
 
-The nominal current consumed by the motor under full load is calculated as follows:
+The nominal current consumed by the motor under full load is theoretically calculated as follows:
 
 $$I_{\text{nominal}} = \frac{P}{V} = \frac{20\text{ W}}{12\text{ V}} \approx 1.67\text{ A}$$
 
-A standard 1A or 1.5A regulator might seem sufficient for the electronic stages but brush DC motors require significantly higher currents during startup and load peaks. Using a standard regulator would cause severe voltage drops and the sistem short-life. 
+However, during physical testing in the laboratory, it was measured the actual current consumption of our motor under different loads:
+* **No-load current ($I_{\text{no-load}}$):** Measured between 0.2A and 0.3A when running freely.
+* **Stall current ($I_{\text{stall}}$):** Measured at 2.19A when the motor is completely blocked (representing the absolute worst-case scenario if the punch gets mechanically jammed).
 
-For this reason, are selected the following regulators:
+While a standard 1A or 1.5A regulator might seem sufficient for the nominal operating conditions, it would immediately fail or trigger thermal shutdown during startup transients or in a stall event. 
 
-* **LM1085IT-12 (+12V Rail):** This is a Low Dropout regulator rated for up to 3A. It provides a substantial safety margin for our system:
+For this reason, it was selected the following regulators:
 
-$$\text{Safety Margin} = \frac{3\text{ A}}{1.67\text{ A}} \approx 1.8$$
+* **LM1085IT-12 (+12V Rail):** This is a Low Dropout regulator rated for up to 3A. It provides a reliable safety margin even under the worst-case stall conditions:
 
-This 80% current headroom allows the regulator to easily handle the motor's startup transients and continuous nominal loads without breaking a sweat, especially when paired with its passive aluminum heatsink to dissipate the heat.
+$$\text{Safety Margin} = \frac{3\text{ A}}{2.19\text{ A}} \approx 1.37$$
+
+This means that even if the mechanical punch gets completely jammed and the motor stalls drawing 2.19A, our regulator still operates with a 37% safety headroom. This prevents the regulator from failing, keeping the control electronics alive and giving the Arduino enough time to detect the current spike through the shunt and trigger the safety relay to shut down the system. A passive aluminum heatsink was also paired with it to manage the heat generated during these continuous load periods.
 
 * **7912 (-12V Rail):** Since the negative rail is dedicated exclusively to powering the operational amplifiers ($\mu$A741CP and AMP03), the current demand on this side is extremely low (typically under 10mA). A standard 1A negative regulator was selected. Because the actual load is less than 1% of the regulator's limit, it operates under virtually no thermal stress and runs completely cool.
 
