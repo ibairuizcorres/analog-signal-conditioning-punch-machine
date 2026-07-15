@@ -5,7 +5,7 @@ This project covers the design, calculation, and implementation of the power sup
 <p align="center">
   <img src="4_Media/punching_machine_prototype.jpg" alt="Prototype side" width="35%" style="vertical-align: middle;">
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="4_Media/punching_machine.jpg" alt="Prototype front" width="40%" style="vertical-align: middle;">
+  <img src="4_Media/punching_machine.jpg" alt="Prototype front" width="48%" style="vertical-align: middle;">
 </p>
 
 ## Project Context & My Role
