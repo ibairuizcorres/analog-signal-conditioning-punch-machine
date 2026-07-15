@@ -50,7 +50,7 @@ We selected the following hardware components and parameters to make the system 
 In this section is going to be shown the entire calculation, design and construction of the punching machine's power supply. 
 
 <p align="center">
-  <img src="4_Media/power_supplyer.jpg" alt="Symmetric Power Supply" width="60%">
+  <img src="4_Media/power_supplyer.jpg" alt="Symmetric Power Supply" width="50%">
 </p>
 
 First of all is important to know that this power supply is different from standard ones. In this case, the power supply provides a +12/-12V, that makes a 24V of voltage drop. But, why is this configuration used instead of a +12V/0V one? With that configuration, the motor can be supplied with a 12V voltage and apparently the two op-amps too. 
