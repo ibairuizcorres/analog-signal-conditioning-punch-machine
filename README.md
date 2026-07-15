@@ -47,6 +47,8 @@ We selected the following hardware components and parameters to make the system 
 | **Gain Stage** | uA741CP Operational Amplifier | Is configured to amplifie the analog signal to a 0-5V range. |
 | **Control Unit** | Arduino Uno R3 | Reads the analog signal and filters the noise using code. |
 
+---
+
 ## 3. Symmetric Power Supply Design (±12V)
 
 In this section is going to be shown the entire calculation, design and construction of the punching machine's power supply. 
