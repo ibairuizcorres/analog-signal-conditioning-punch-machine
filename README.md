@@ -93,4 +93,38 @@ The chosen one is the linear DC power supply because of its simplicity and the l
 
 ### 3.2. Component Selection & Calculations
 
-### 3.
+To build a reliable and robust system, the physical power supply was assembled as a custom shield that sits directly on top of the control stack. This design keeps the wiring clean and minimizes the footprint inside the machine.
+
+<p align="center">
+  <img src="4_Media/assembled_power_supply_shield.jpg" alt="Assembled Power Supply Shield" width="50%">
+</p>
+
+#### Power Calculations & Regulator Selection
+
+The component selection was driven by the power requirements of our main actuator (the 12V, 20W brush DC motor). 
+
+The nominal current consumed by the motor under full load is calculated as follows:
+
+$$I_{\text{nominal}} = \frac{P}{V} = \frac{20\text{ W}}{12\text{ V}} \approx 1.67\text{ A}$$
+
+While a standard 1A or 1.5A regulator might seem sufficient for the electronic stages, brush DC motors demand significantly higher inrush currents during startup and transient load peaks. Using a standard regulator would trigger thermal shutdown or cause severe voltage drops. 
+
+For this reason, we selected the following regulators:
+
+* **LM1085IT-12 (+12V Rail):** This is a Low Dropout (LDO) regulator rated for up to 3A. It provides a substantial safety margin for our system:
+
+$$\text{Safety Margin} = \frac{3\text{ A}}{1.67\text{ A}} \approx 1.8$$
+
+This 80% current headroom allows the regulator to easily handle the motor's startup transients and continuous nominal loads without breaking a sweat, especially when paired with its passive aluminum heatsink to dissipate the heat.
+
+* **7912 (-12V Rail):** Since the negative rail is dedicated exclusively to powering the operational amplifiers ($\mu$A741CP and AMP03), the current demand on this side is extremely low (typically under 10mA). A standard 1A negative regulator was selected. Because the actual load is less than 1% of the regulator's limit, it operates under virtually no thermal stress and runs completely cool.
+
+#### Filtering and Decoupling Stage
+
+To achieve a clean DC output and shield the sensitive analog signals from motor noise, the following passive components were selected:
+
+* **Main Filtering (2x 3300uF, 25V Capacitors):** These large electrolytic capacitors act as the primary energy reservoir to smooth out the rectified AC wave. A 25V voltage rating was chosen to provide a safe operating margin above our 19V unregulated input.
+* **Transient Decoupling (2x 27uF, 25V Capacitors):** Placed at the output of the regulators to stabilize the control loops and improve transient response when the motor starts or stops.
+* **High-Frequency Bypass (2x 100nF Ceramic Discs):** These small ceramic capacitors filter out high-frequency electromagnetic interference (EMI) and prevent high-frequency oscillations in the regulators.
+* **Status Indicators (2x Red LEDs):** Tied to the positive and negative rails with current-limiting resistors to serve as a hardware diagnostic tool, giving immediate visual confirmation that both symmetric power rails are active.
+* **Phoenix Screw Terminals:** Added to provide secure, low-resistance physical connections for the power input and output lines, avoiding loose wiring contacts in a mechanical environment subject to machine vibrations.
