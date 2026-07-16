@@ -44,7 +44,7 @@ It was selected the following hardware components and parameters to make the sys
 | **Shunt Resistor** | 2A / 200mV 0.1Ω Shunt Resistor | Generates a small voltage drop proportional to the motor current. |
 | **Analog Power Supply** | ±12V Symmetric power supply (regulated from 230V AC) | Provides clean power to the analog amplifiers and the motor. |
 | **Differential Stage** | AMP03 Difference Amplifier | Reads the voltage across the shunt and removes common-mode noise. |
-| **Gain Stage** | uA741CP Operational Amplifier | Is configured to amplifie the analog signal to a 0-5V range. |
+| **Gain Stage** | UA741CP Operational Amplifier | Is configured to amplifie the analog signal to a 0-5V range. |
 | **Control Unit** | Arduino Uno R3 | Reads the analog signal and filters the noise using code. |
 
 ---
@@ -101,36 +101,57 @@ To build a reliable system, the physical power supply was assembled designed for
 
 #### Power Calculations & Regulator Selection
 
-The component selection was driven by the power requirements of our main actuator (the 12V, 20W brush DC motor). 
+The component selection was driven by the power requirements of the main actuator, the 12V, 20W brush DC motor. 
 
-The nominal current consumed by the motor under full load is theoretically calculated as follows:
+The nominal current consumed by the motor is theoretically calculated as follows:
 
 $$I_{\text{nominal}} = \frac{P}{V} = \frac{20\text{ W}}{12\text{ V}} \approx 1.67\text{ A}$$
 
-However, during physical testing in the laboratory, it was measured the actual current consumption of our motor under different loads:
+However, during physical testing in the laboratory, it was measured a diferent current consumption of the motor under different loads.
 * **No-load current ($I_{\text{no-load}}$):** Measured between 0.2A and 0.3A when running freely.
-* **Stall current ($I_{\text{stall}}$):** Measured at 2.19A when the motor is completely blocked (representing the absolute worst-case scenario if the punch gets mechanically jammed).
+* **Stall current ($I_{\text{stall}}$):** Measured at 2.19A when the motor is completely blocked (representing the absolute worst-case scenario if the punch gets mechanically blocked).
 
-While a standard 1A or 1.5A regulator might seem sufficient for the nominal operating conditions, it would immediately fail or trigger thermal shutdown during startup transients or in a stall event. 
-
+While a standard 1A or 1.5A regulator can be seem sufficient for the nominal operating conditions, it would immediately fail during a mechanical block event. 
 For this reason, it was selected the following regulators:
 
 * **LM1085IT-12 (+12V Rail):** This is a Low Dropout regulator rated for up to 3A. It provides a reliable safety margin even under the worst-case stall conditions:
 
 $$\text{Safety Margin} = \frac{3\text{ A}}{2.19\text{ A}} \approx 1.37$$
 
-This means that even if the mechanical punch gets completely jammed and the motor stalls drawing 2.19A, our regulator still operates with a 37% safety headroom. This prevents the regulator from failing, keeping the control electronics alive and giving the Arduino enough time to detect the current spike through the shunt and trigger the safety relay to shut down the system. A passive aluminum heatsink was also paired with it to manage the heat generated during these continuous load periods.
+This means that even if the mechanical punch gets completely blocked and the motor stops consuming 2.19A, the regulator still operates with a 37% safety margin. This prevents the regulator from failing, keeping the control electronics alive and giving the Arduino enough time to detect the current spike. A passive aluminum heatsink was also paired with it to manage the heat generated during these continuous load periods. The dimension and characteristics of the heatsink they weren't calculated because of the current safety margin.
 
-* **7912 (-12V Rail):** Since the negative rail is dedicated exclusively to powering the operational amplifiers ($\mu$A741CP and AMP03), the current demand on this side is extremely low (typically under 10mA). A standard 1A negative regulator was selected. Because the actual load is less than 1% of the regulator's limit, it operates under virtually no thermal stress and runs completely cool.
+* **7912 (-12V Rail):** Since the negative rail is dedicated exclusively to powering the operational amplifiers (UA741CP and AMP03), the current demand on this side is extremely low (typically under 10mA). A standard 1A negative regulator was selected. Because the actual load is less than 1% of the regulator's limit, it operates under no thermal stress and runs completely cool.
 
 #### Filtering and Decoupling Stage
 
-To achieve a clean DC output and shield the sensitive analog signals from motor noise, the following passive components were selected:
+To ensure a clean DC output and shield the sensitive analog signals from motor noise, we implemented a filtering stage in the power supply. This design relies on the teamwork between different capacitor technologies, placing them in a specific electrical and physical order.
 
-| Component | Technical Specification | Primary Role |
-| :--- | :--- | :--- |
-| **Main Filtering** | 2x 3300μF, 25V Capacitors | These large electrolytic capacitors act as the primary energy reservoir to smooth out the rectified AC wave. A 25V voltage rating was chosen to provide a safe operating margin above our 19V unregulated input. |
-| **Transient Decoupling** | 2x 27μF, 25V Capacitors | Placed at the output of the regulators to stabilize the control loops and improve transient response when the motor starts or stops. |
-| **High-Frequency Bypass** | 2x 100nF Ceramic Discs | These small ceramic capacitors filter out high-frequency electromagnetic interference (EMI) and prevent high-frequency oscillations in the regulators. |
-| **Status Indicators** | 2x Red LEDs | Tied to the positive and negative rails with current-limiting resistors to serve as a hardware diagnostic tool, giving immediate visual confirmation that both symmetric power rails are active. |
-| **Phoenix Screw Terminals** | Screw terminal blocks | Added to provide secure, low-resistance physical connections for the power input and output lines, avoiding loose wiring contacts in a mechanical environment subject to machine vibrations. |
+##### Ripple Voltage Calculation
+
+The main filtering is compound by the large electrolytic capacitors ($3300\,\mu\text{F}$). To justify this capacity mathematically and ensure the voltage regulators never drop out of regulation, we calculate the peak-to-peak ripple voltage ($V_{r(pp)}$) using the full-wave rectified linear approximation:
+
+$$V_{r(pp)} = \frac{I_L}{f \cdot C}$$
+
+Where:
+* $I_L$ is the nominal motor current load ($1.67\text{ A}$).
+* $f$ is the ripple frequency ($100\text{ Hz}$ for a full-wave rectified $50\text{ Hz}$ mains grid).
+* $C$ is the filtering capacity ($3300\,\mu\text{F} = 3300 \cdot 10^{-6}\text{ F}$).
+
+$$V_{r(pp)} = \frac{1.67\text{ A}}{100\text{ Hz} \cdot 3300 \cdot 10^{-6}\text{ F}} \approx 5.06\text{ V}$$
+
+Since our unregulated peak voltage ($V_{\text{peak}}$) is approximately $19\text{ V}$, the minimum instantaneous voltage ($V_{\text{min}}$) feeding the regulator input during the discharge phase is:
+
+$$V_{\text{min}} = V_{\text{peak}} - V_{r(pp)} = 19\text{ V} - 5.06\text{ V} = 13.94\text{ V}$$
+
+The LM1085 LDO regulator requires a minimum input voltage defined by its regulated output plus its dropout voltage ($V_{\text{dropout}} \approx 1.3\text{ V}$):
+
+$$V_{\text{in(min)}} = V_{\text{out}} + V_{\text{dropout}} = 12\text{ V} + 1.3\text{ V} = 13.3\text{ V}$$
+
+Because $13.94\text{ V} > 13.3\text{ V}$, this calculation mathematically proves that the input voltage will never drop below the regulator's minimum threshold, ensuring a completely stable and noise-free $12\text{ V}$ output.
+
+##### Capacitor Teamwork and Order
+
+While the $3300\,\mu\text{F}$ capacitors handle the heavy lifting of smoothing the low-frequency $100\text{ Hz}$ ripple, they are physically too slow to react to high-frequency electromagnetic interference (EMI) generated by the DC motor brushes. To solve this, we placed smaller, faster capacitors in a strict cascading order:
+
+```text
+[Rectifier Bridge] ──> [3300µF (Bulk)] ──> [100nF (Ceramic)] ──> [ Regulator ] ──> [27µF (Electrolytic)] ──> [Load]
