@@ -164,9 +164,8 @@ $$V_{\text{in(min)}} = V_{\text{out}} + V_{\text{dropout}} = 12\text{ V} + 1.3\t
 
 Because $13.94\text{ V} > 13.3\text{ V}$, this calculation mathematically proves that the input voltage will never drop below the regulator's minimum threshold, ensuring a completely stable and noise-free $12\text{ V}$ output.
 
-##### Capacitor Teamwork and Order
 
-**What I Actually Built**
+**Capacitor Teamwork and Order**
 
 While assembling the power supply board in the lab, I did it in two steps:
 
