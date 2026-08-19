@@ -8,15 +8,28 @@ This project covers the design, calculation, and implementation of the power sup
   <img src="4_Media/punching_machine.jpg" alt="Prototype front" width="48%" style="vertical-align: middle;">
 </p>
 
+## Table of Contents
+
+- [Project Context & My Role](#project-context--my-role)
+- [1. Project Overview](#1-project-overview)
+- [2. Technical Specifications](#2-technical-specifications)
+- [3. Symmetric Power Supply Design (±12V)](#3-symmetric-power-supply-design-12v)
+  - [3.1. Block Diagram & Operating Principle](#31-block-diagram--operating-principle)
+  - [3.2. Component Selection & Calculations](#32-component-selection--calculations)
+
+---
+
 ## Project Context & My Role
 
 This project was a multidisciplinary team challenge. The main objective was to design and build a fully functional, scaled prototype of an industrial punching machine. The project integrated some engineering fields:
+
 * **Mechanical Design:** Creating the 3D model in SolidWorks and optimizing the structure.
 * **Materials & Physics:** Studying cutting forces, shear strength, and calculating tool wear in MATLAB.
 * **Signal Analysis:** Capturing and analyzing machine vibrations using Fourier Transforms (FFT) in MATLAB.
 * **Electrical & Control:** Designing the power supply, analog conditioning circuits, and programming the microcontrollers.
 
 ### My Specific Contribution
+
 To work efficiently as a group, we divided the tasks based on our technical strengths. **My role was to lead and develop the complete electrical, electronic, and control subsystems (which represented 90% of my personal workload in this project).**
 
 While my teammates focused on the mechanical frames, material tests, and vibration analysis, I took full responsibility for the power delivery, analog circuit design, and Arduino programming. This portfolio documents my specific engineering work and decisions in these areas.
@@ -28,6 +41,7 @@ While my teammates focused on the mechanical frames, material tests, and vibrati
 In industrial factories, monitoring motor current is very important to find machine faults and protect the system from overloads. The main goal of this project was to measure the real-time current of the punching machine's motor during its work cycle. In this case, the objective of measuring the current was to stop the machine if the power exceeds a safe limit. This current is read by an Arduino Uno R3, which controls a relay to switch the motor on or off. Additionally, the project required the possibility to change the motor's rotation direction. This specific part will be explained in broad strokes because it was a shared task with my team.
 
 To do this, I designed and built an electronic system with three main parts:
+
 * **Symmetric Power Supply:** A stable ±12V power supply. The +12V rail powers the DC motor and the positive analog rail, while the -12V rail is used for the negative analog rail of the operational amplifiers.
 * **Signal Conditioning:** Reading the differential voltage from a shunt resistor and amplifying it so the microcontroller can read it and make control decisions based on this measurement.
 * **Control Logic:** Processing the signal with an Arduino to monitor the machine and filtering the electrical noise using software.
@@ -51,19 +65,19 @@ It was selected the following hardware components and parameters to make the sys
 
 ## 3. Symmetric Power Supply Design (±12V)
 
-In this section is going to be shown the entire calculation, design and construction of the punching machine's power supply. 
+In this section is going to be shown the entire calculation, design and construction of the punching machine's power supply.
 
 <p align="center">
   <img src="4_Media/power_supplyer.jpg" alt="Symmetric Power Supply" width="42%">
 </p>
 
-First of all is important to know that this power supply is different from standard ones. In this case, the power supply provides a +12/-12V, that makes a 24V of voltage drop. But, why is this configuration used instead of a +12V/0V one? With that configuration, the motor can be supplied with a 12V voltage and apparently the two op-amps too. 
+First of all is important to know that this power supply is different from standard ones. In this case, the power supply provides a +12/-12V, that makes a 24V of voltage drop. But, why is this configuration used instead of a +12V/0V one? With that configuration, the motor can be supplied with a 12V voltage and apparently the two op-amps too.
 
 Well, these op-amps, which are going to be introduced in the Section 4, are a common type known by the name of **non** rail-to-rail. This means that the op-amp output voltage can't be the same as the op-amp minimum supply voltage. Moreover, the voltage will never reach that minimum voltage because of the saturation voltage of these op-amps. Normally, this saturation voltage is about 1.5 and 2V, so, to get a 0-12V output from the amplifiers, a -2/12V power supply is needed.
 
 ### 3.1. Block Diagram & Operating Principle
 
-To start understanding more about the power supply, it is necessary to know one difference. Generally, in our lives we use two types of power supplies. 
+To start understanding more about the power supply, it is necessary to know one difference. Generally, in our lives we use two types of power supplies.
 
 * **Linear DC power supply:** The simplest power supplies are the linear ones. These use transformers to reduce the AC voltage from the network. To convert that AC voltage into a DC one, a bridge rectifier is used, whose function is to make the AC sinusoidal wave a full positive sinusoidal wave.
 
@@ -87,7 +101,7 @@ The inconvenience of this type is that all the excess voltage is dissipated as h
 
 $$P = (19 - 12) \cdot 1 = 7\text{W}$$
 
-* **Switching DC power supply:** They are the modern ones, allow the user to reach high output powers generating low heat dissipation. they are the most used power supplies, from the PC's power supply to a electric car one.  I could go on and on explaining these ones but that could be enough for another article, so, what type has been chosen in this project?
+* **Switching DC power supply:** They are the modern ones, allow the user to reach high output powers generating low heat dissipation. they are the most used power supplies, from the PC's power supply to a electric car one. I could go on and on explaining these ones but that could be enough for another article, so, what type has been chosen in this project?
 
 The chosen one is the linear DC power supply because of its simplicity and the low noise generated. The switching ones, are more complex to understand and emit much noise compared to the linear ones.
 
@@ -101,20 +115,21 @@ To build a reliable system, the physical power supply was assembled designed for
 
 #### Power Calculations & Regulator Selection
 
-The component selection was driven by the power requirements of the main actuator, the 12V, 20W brush DC motor. 
+The component selection was driven by the power requirements of the main actuator, the 12V, 20W brush DC motor.
 
 The nominal current consumed by the motor is theoretically calculated as follows:
 
 $$I_{\text{nominal}} = \frac{P}{V} = \frac{20\text{ W}}{12\text{ V}} \approx 1.67\text{ A}$$
 
 However, during physical testing in the laboratory, it was measured a diferent current consumption of the motor under different loads.
+
 * **No-load current ($I_{\text{no-load}}$):** Measured between 0.2A and 0.3A when running freely.
 * **Stall current ($I_{\text{stall}}$):** Measured at 2.19A when the motor is completely blocked (representing the absolute worst-case scenario if the punch gets mechanically blocked).
 
-While a standard 1A or 1.5A regulator can be seem sufficient for the nominal operating conditions, it would immediately fail during a mechanical block event. 
+While a standard 1A or 1.5A regulator can be seem enough for the nominal operating conditions, it would immediately fail during a mechanical block event.
 For this reason, it was selected the following regulators:
 
-* **LM1085IT-12 (+12V Rail):** This is a Low Dropout regulator rated for up to 3A. It provides a reliable safety margin even under the worst-case stall conditions:
+* **LM1085IT-12 (+12V Rail):** This is a Low Dropout regulator (In this case is not relevant the type of regulator, becuase of the high voltage drop on the regulator) rated for up to 3A. It provides a reliable safety margin even under the worst-case stall conditions:
 
 $$\text{Safety Margin} = \frac{3\text{ A}}{2.19\text{ A}} \approx 1.37$$
 
@@ -143,7 +158,7 @@ Since our unregulated peak voltage ($V_{\text{peak}}$) is approximately $19\text
 
 $$V_{\text{min}} = V_{\text{peak}} - V_{r(pp)} = 19\text{ V} - 5.06\text{ V} = 13.94\text{ V}$$
 
-The LM1085 LDO regulator requires a minimum input voltage defined by its regulated output plus its dropout voltage ($V_{\text{dropout}} \approx 1.3\text{ V}$):
+The LM1085 LDO regulator requires a minimum input voltage defined by its regulated output plus its dropout voltage. This voltage is considerably lower than a non LDO regulator. ($V_{\text{dropout}} \approx 1.3\text{ V}$):
 
 $$V_{\text{in(min)}} = V_{\text{out}} + V_{\text{dropout}} = 12\text{ V} + 1.3\text{ V} = 13.3\text{ V}$$
 
@@ -151,7 +166,33 @@ Because $13.94\text{ V} > 13.3\text{ V}$, this calculation mathematically proves
 
 ##### Capacitor Teamwork and Order
 
-While the $3300\,\mu\text{F}$ capacitors handle the heavy lifting of smoothing the low-frequency $100\text{ Hz}$ ripple, they are physically too slow to react to high-frequency electromagnetic interference (EMI) generated by the DC motor brushes. To solve this, we placed smaller, faster capacitors in a strict cascading order:
+**What I Actually Built**
+
+While assembling the power supply board in the lab, I did it in two steps:
+
+- First, I only placed the big bulk capacitor (3300 µF) at the input and a 27 µF capacitor at the output.
+- Later, I added 100 nF ceramic capacitors (the ones marked "104") to filter high-frequency noise. But I soldered them in the wrong spot (in the output of the regulator). This is how the board ended up:
 
 ```text
-[Rectifier Bridge] ──> [3300µF (Bulk)] ──> [100nF (Ceramic)] ──> [ Regulator ] ──> [27µF (Electrolytic)] ──> [Load]
+[Bridge Rectifier] ──> [3300µF Bulk] ──> [27µF Electrolytic] ──> [ LM1085 ] ──> [100nF Ceramic] ──> [Load]
+```
+
+**Why This Setup Is Wrong**
+
+After checking the LM1085 datasheet, I found two clear mistakes:
+
+* **Input filtering doesn't make sense.** Putting the 27 µF electrolytic capacitor in parallel with the 3300 µF bulk capacitor at the input does basically nothing. Both are electrolytic capacitors with the same limitations at high frequencies, so adding 27 µF on top of 3300 µF doesn't improve noise rejection at all.
+
+* **Output is unstable — ESR problem.** According to Section 7.4.2 (Stability Consideration) of the LM1085 datasheet, the regulator needs an output capacitor with a specific ESR (Equivalent Series Resistance) to keep its feedback loop stable. The datasheet asks for at least 50 µF (aluminum electrolytic) at the output. I only had a 100 nF ceramic capacitor there, which is below what's needed and gives a very low ESR. As consequence the regulator is badly configurated.
+
+**How It Should Actually Be Wired**
+
+To get stability and clean power delivery, the capacitors should follow this order, from raw power conversion to regulated output:
+
+```text
+[Bridge Rectifier] ──> [3300µF Bulk] ──> [100nF Ceramic] ──> [ LM1085 ] ──> [27µF Electrolytic] ──> [Load]
+```
+
+- **3300 µF Bulk Electrolytic** — right after the rectifier, to smooth out the 100 Hz ripple from the full-wave rectification.
+- **100 nF Ceramic Disc (104)** — placed right next to the regulator's input pin (Vin), to filter high-frequency line noise and stop parasitic oscillations before they even reach the regulator.
+- **27 µF Electrolytic** — placed right at the regulator's output pin (Vout), to supply quick charge during motor current spikes and keep the feedback loop stable.
