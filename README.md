@@ -10,7 +10,7 @@ This project covers the design, calculation, and implementation of the power sup
 
 ## Project Context & My Role
 
-This project was a multidisciplinary team challenge. The main objective was to design and build a fully functional, scaled prototype of an industrial punching machine. The project integrated several engineering fields:
+This project was a multidisciplinary team challenge. The main objective was to design and build a fully functional, scaled prototype of an industrial punching machine. The project integrated some engineering fields:
 * **Mechanical Design:** Creating the 3D model in SolidWorks and optimizing the structure.
 * **Materials & Physics:** Studying cutting forces, shear strength, and calculating tool wear in MATLAB.
 * **Signal Analysis:** Capturing and analyzing machine vibrations using Fourier Transforms (FFT) in MATLAB.
