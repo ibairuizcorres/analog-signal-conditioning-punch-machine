@@ -198,7 +198,13 @@ Bridge Rectifier ──> 3300µF Bulk ──> 100nF Ceramic ──> LM1085 ─�
 
 ## 4. Analog Signal Conditioning Stage
 
+The main objective of the project is to measure the motor current in real time to detect a current peak that could damage the motion system.
 
+To achieve this, a two-stage amplification system has been designed. Why a twho-stage one? 
+
+In one hand, as i have already explained, to measure the motor consumed current i used a shunt which creates a voltage drop proportional to the consumed current. This voltage drop it is given in the two sides of the shunt but to amplify that voltage, we need a ground-referenced voltage drop measured between gnd and the shunt. To achive that a diferencial op-amp has been used. 
+
+In the other hand, is needed to amplify that diference. 
 
 ### 4.1. First Stage: Differential Sensing (AMP03)
 
