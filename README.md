@@ -176,7 +176,7 @@ While assembling the power supply board in the lab, I did it in two steps:
 [Bridge Rectifier] ──> [3300µF Bulk] ──> [27µF Electrolytic] ──> [ LM1085 ] ──> [100nF Ceramic] ──> [Load]
 ```
 
-**Why This Setup Is Wrong**
+##### Why This Setup Is Wrong
 
 After checking the LM1085 datasheet, I found two clear mistakes:
 
@@ -184,7 +184,7 @@ After checking the LM1085 datasheet, I found two clear mistakes:
 
 * **Output is unstable — ESR problem.** According to Section 7.4.2 (Stability Consideration) of the LM1085 datasheet, the regulator needs an output capacitor with a specific ESR (Equivalent Series Resistance) to keep its feedback loop stable. The datasheet asks for at least 50 µF (aluminum electrolytic) at the output. I only had a 100 nF ceramic capacitor there, which is below what's needed and gives a very low ESR. As consequence the regulator is badly configurated.
 
-**How It Should Actually Be Wired**
+##### How It Should Actually Be Wired
 
 To get stability and clean power delivery, the capacitors should follow this order, from raw power conversion to regulated output:
 
