@@ -173,7 +173,7 @@ While assembling the power supply board in the lab, I did it in two steps:
 - Later, I added 100 nF ceramic capacitors (the ones marked "104") to filter high-frequency noise. But I soldered them in the wrong spot (in the output of the regulator). This is how the board ended up:
 
 ```text
-[Bridge Rectifier] ──> [3300µF Bulk] ──> [27µF Electrolytic] ──> [ LM1085 ] ──> [100nF Ceramic] ──> [Load]
+Bridge Rectifier ──> 3300µF Bulk ──> 27µF Electrolytic ──> LM1085 ──> 100nF Ceramic ──> Load
 ```
 
 ##### Why This Setup Is Wrong
@@ -189,7 +189,7 @@ After checking the LM1085 datasheet, I found two clear mistakes:
 To get stability and clean power delivery, the capacitors should follow this order, from raw power conversion to regulated output:
 
 ```text
-[Bridge Rectifier] ──> [3300µF Bulk] ──> [100nF Ceramic] ──> [ LM1085 ] ──> [27µF Electrolytic] ──> [Load]
+Bridge Rectifier ──> 3300µF Bulk ──> 100nF Ceramic ──> LM1085 ──> 27µF Electrolytic ──> Load
 ```
 
 - **3300 µF Bulk Electrolytic** — right after the rectifier, to smooth out the 100 Hz ripple from the full-wave rectification.
