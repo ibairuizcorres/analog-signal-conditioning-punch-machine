@@ -195,3 +195,26 @@ Bridge Rectifier ──> 3300µF Bulk ──> 100nF Ceramic ──> LM1085 ─�
 - **3300 µF Bulk Electrolytic** — right after the rectifier, to smooth out the 100 Hz ripple from the full-wave rectification.
 - **100 nF Ceramic Disc (104)** — placed right next to the regulator's input pin (Vin), to filter high-frequency line noise and stop parasitic oscillations before they even reach the regulator.
 - **27 µF Electrolytic** — placed right at the regulator's output pin (Vout), to supply quick charge during motor current spikes and keep the feedback loop stable.
+
+## 4. Analog Signal Conditioning Stage
+
+
+
+### 4.1. First Stage: Differential Sensing (AMP03)
+
+
+
+### 4.2. Second Stage: Voltage Amplification (uA741CP)
+
+
+
+## 5. Microcontroller Interface & Control Logic
+
+
+### 5.1. Signal Processing & Calibration
+
+
+### 5.2. Overcurrent Protection Logic
+
+
+}
