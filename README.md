@@ -182,7 +182,7 @@ After checking the LM1085 datasheet, I found two clear mistakes:
 
 * **Input filtering doesn't make sense.** Putting the 27 µF electrolytic capacitor in parallel with the 3300 µF bulk capacitor at the input does basically nothing. Both are electrolytic capacitors with the same limitations at high frequencies, so adding 27 µF on top of 3300 µF doesn't improve noise rejection at all.
 
-* **Output is unstable — ESR problem.** According to Section 7.4.2 (Stability Consideration) of the LM1085 datasheet, the regulator needs an output capacitor with a specific ESR (Equivalent Series Resistance) to keep its feedback loop stable. The datasheet asks for at least 50 µF (aluminum electrolytic) at the output. I only had a 100 nF ceramic capacitor there, which is below what's needed and gives a very low ESR. As consequence the regulator is badly configurated.
+* **ESR problem.** According to Section 7.4.2 (Stability Consideration) of the LM1085 datasheet, the regulator needs an output capacitor with a specific ESR (Equivalent Series Resistance) to keep its feedback loop stable. The datasheet asks for at least 50 µF (aluminum electrolytic) at the output. I only had a 100 nF ceramic capacitor there, which is below what's needed and gives a very low ESR. As consequence the regulator is badly configurated.
 
 ##### How It Should Actually Be Wired
 
