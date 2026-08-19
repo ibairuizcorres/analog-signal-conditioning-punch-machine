@@ -216,5 +216,3 @@ Bridge Rectifier ──> 3300µF Bulk ──> 100nF Ceramic ──> LM1085 ─�
 
 ### 5.2. Overcurrent Protection Logic
 
-
-}
