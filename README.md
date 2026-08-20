@@ -220,7 +220,7 @@ $$\text{Current} = \frac{\text{Voltage}}{2.5}$$
 Standard operational amplifiers can be configured in many ways using external resistors. However, the AMP03 is a difference amplifier designed specifically for precision unity gain ($G = 1$). 
 
 <p align="center">
-  <img src="image_281ee9.png" alt="AMP03 Differential Sensing Stage" width="70%">
+  <img src="a.png" alt="AMP03 Differential Sensing Stage" width="70%">
 </p>
 
 The electrical connections for this first stage were wired as follows:
