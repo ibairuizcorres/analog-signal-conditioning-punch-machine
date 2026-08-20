@@ -1,4 +1,4 @@
-# Analog Signal Conditioning & Control - Scaled Punching Machine
+# Analog Signal Conditioning and Control - Scaled Punching Machine
 
 This project covers the design, calculation, and implementation of the power supply that feeds a data acquisition and control system for a scaled industrial punching machine. The development focuses on the electrical and electronic hardware. It solves the problem of measuring a DC motor's current in a noisy environment using analog electronics and digital processing.
 
@@ -10,23 +10,23 @@ This project covers the design, calculation, and implementation of the power sup
 
 ## Table of Contents
 
-- [Project Context & My Role](#project-context--my-role)
+- [Project Context and My Role](#project-context--my-role)
 - [1. Project Overview](#1-project-overview)
 - [2. Technical Specifications](#2-technical-specifications)
 - [3. Symmetric Power Supply Design (±12V)](#3-symmetric-power-supply-design-12v)
-  - [3.1. Block Diagram & Operating Principle](#31-block-diagram--operating-principle)
-  - [3.2. Component Selection & Calculations](#32-component-selection--calculations)
+  - [3.1. Block Diagram and Operating Principle](#31-block-diagram--operating-principle)
+  - [3.2. Component Selection and Calculations](#32-component-selection--calculations)
 
 ---
 
-## Project Context & My Role
+## Project Context and My Role
 
 This project was a multidisciplinary team challenge. The main objective was to design and build a fully functional, scaled prototype of an industrial punching machine. The project integrated some engineering fields:
 
 * **Mechanical Design:** Creating the 3D model in SolidWorks and optimizing the structure.
-* **Materials & Physics:** Studying cutting forces, shear strength, and calculating tool wear in MATLAB.
+* **Materials and Physics:** Studying cutting forces, shear strength, and calculating tool wear in MATLAB.
 * **Signal Analysis:** Capturing and analyzing machine vibrations using Fourier Transforms (FFT) in MATLAB.
-* **Electrical & Control:** Designing the power supply, analog conditioning circuits, and programming the microcontrollers.
+* **Electrical and Control:** Designing the power supply, analog conditioning circuits, and programming the microcontrollers.
 
 ### My Specific Contribution
 
@@ -75,7 +75,7 @@ First of all is important to know that this power supply is different from stand
 
 Well, these op-amps, which are going to be introduced in the Section 4, are a common type known by the name of **non** rail-to-rail. This means that the op-amp output voltage can't be the same as the op-amp minimum supply voltage. Moreover, the voltage will never reach that minimum voltage because of the saturation voltage of these op-amps. Normally, this saturation voltage is about 1.5 and 2V, so, to get a 0-12V output from the amplifiers, a -2/12V power supply is needed.
 
-### 3.1. Block Diagram & Operating Principle
+### 3.1. Block Diagram and Operating Principle
 
 To start understanding more about the power supply, it is necessary to know one difference. Generally, in our lives we use two types of power supplies.
 
@@ -105,7 +105,7 @@ $$P = (19 - 12) \cdot 1 = 7\text{W}$$
 
 The chosen one is the linear DC power supply because of its simplicity and the low noise generated. The switching ones, are more complex to understand and emit much noise compared to the linear ones.
 
-### 3.2. Component Selection & Calculations
+### 3.2. Component Selection and Calculations
 
 To build a reliable system, the physical power supply was assembled designed for constant and high-stress operation. This means that all the chosen components have been oversized to promise a long working time. This section explains which components were selected and why, along with some calculations for the oversizing.
 
@@ -113,7 +113,7 @@ To build a reliable system, the physical power supply was assembled designed for
   <img src="4_Media/assembled_power_supply_shield.jpg" alt="Assembled Power Supply Shield" width="50%">
 </p>
 
-#### Power Calculations & Regulator Selection
+#### Power Calculations and Regulator Selection
 
 The component selection was driven by the power requirements of the main actuator, the 12V, 20W brush DC motor.
 
@@ -223,12 +223,12 @@ Standard operational amplifiers can be configured in many ways using external re
   <img src="a.png" alt="AMP03 Differential Sensing Stage" width="70%">
 </p>
 
-The electrical connections for this first stage were wired as follows:
+The electrical connections for this first stage were wired like this:
 
-* **Differential Inputs (Pins 2 & 3):** The inverting input (`-IN`, Pin 2) and non-inverting input (`+IN`, Pin 3) are connected directly across the two terminals of the HOBUT shunt resistor.
-* **Ground Reference (Pin 1):** The `REFERENCE` pin is connected directly to analog ground (GND), converting the floating voltage drop into a ground-referenced potential.
-* **Feedback Loop (Pins 5 & 6):** The `SENSE` pin (Pin 5) is tied directly to the `OUTPUT` pin (Pin 6) to close the internal loop with a fixed gain of 1[cite: 1].
-* **Power Supply (Pins 7 & 4):** Powered directly by the symmetric $\pm12\text{V}$ power supply rail ($+12\text{V}$ on Pin 7 and $-12\text{V}$ on Pin 4).
+* **Differential Inputs (Pins 2 and 3):** The inverting input (-IN, Pin 2) and non-inverting input (+IN, Pin 3) are connected directly across the two terminals of the HOBUT shunt resistor.
+* **Ground Reference (Pin 1):** The REFERENCE pin is connected directly to analog ground (GND), converting the floating voltage drop into a ground-referenced potential.
+* **Feedback Loop (Pins 5 and 6):** The SENSE pin (Pin 5) is tied directly to the OUTPUT pin (Pin 6) to close the internal loop with a fixed gain of 1[cite: 1].
+* **Power Supply (Pins 7 and 4):** Powered directly by the symmetric $\pm12\text{V}$ power supply rail ($+12\text{V}$ on Pin 7 and $-12\text{V}$ on Pin 4).
 
 With this configuration, the AMP03 performs a pure subtraction of the shunt voltages:
 
@@ -238,12 +238,31 @@ The output provides a clean, ground-referenced millivolt signal ($0 - 0.2\text{V
 
 ### 4.2. Second Stage: Voltage Amplification (uA741CP)
 
+Once the AMP03 gives a ground-referenced signal ($0 - 0.2\text{V}$), we need to scale it up to read it by the Arduino anlog reading pin with maximum resolution across its full $0 - 5\text{V}$ range.
+
+For this second stage, a standard UA741CP operational amplifier was set up in a non-inverting amplifier configuration. 
+
+<p align="center">
+  <img src="image_c22d07.png" alt="UA741CP Non-Inverting Stage Schematic" width="70%">
+</p>
+
+The connections for this stage are:
+
+* **Non-Inverting Input (IN+, Pin 3):** Connected directly to the output of the AMP03 to receive the $0 - 0.2\text{V}$ signal.
+* **Gain Resistor Network (IN-, Pin 2):** A feedback resistor $R_F = 240\text{ k}\Omega$ connects the output (Pin 6) back to the inverting input (Pin 2), and a resistor $R_2 = 10\text{ k}\Omega$ connects Pin 2 to GND.
+* **Power Supply (VCC+ and VCC-, Pins 7 and 4):** Connected to the $\pm12\text{V}$ symmetric power rails ($+12\text{V}$ on Pin 7 and $-12\text{V}$ on Pin 4) to ensure the op-amp never saturates near 0V.
+* **Output (OUT, Pin 6):** Connected directly to the Arduino's analog input pin (`A0`).
+
+The gain ($A_v$) of this non-inverting setup is calculated with:
+
+$$A_v = 1 + \frac{R_F}{R_2} = 1 + \frac{240\text{ k}\Omega}{10\text{ k}\Omega} = 1 + 24 = 25$$
+
+With this gain of 25, the $0 - 0.2\text{V}$ signal from the shunt is scaled up to $0 - 5.0\text{V}$, taking full advantage of the Arduino's 10-bit ADC resolution.
+
+## 5. Microcontroller Interface and Control Logic
 
 
-## 5. Microcontroller Interface & Control Logic
-
-
-### 5.1. Signal Processing & Calibration
+### 5.1. Signal Processing and Calibration
 
 
 ### 5.2. Overcurrent Protection Logic
