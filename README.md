@@ -217,7 +217,24 @@ $$\text{Current} = \frac{\text{Voltage}}{2.5}$$
 
 ### 4.1. First Stage: Differential Sensing (AMP03)
 
+Standard operational amplifiers can be configured in many ways using external resistors. However, the AMP03 is a difference amplifier designed specifically for precision unity gain ($G = 1$). 
 
+<p align="center">
+  <img src="image_281ee9.png" alt="AMP03 Differential Sensing Stage" width="70%">
+</p>
+
+The electrical connections for this first stage were wired as follows:
+
+* **Differential Inputs (Pins 2 & 3):** The inverting input (`-IN`, Pin 2) and non-inverting input (`+IN`, Pin 3) are connected directly across the two terminals of the HOBUT shunt resistor.
+* **Ground Reference (Pin 1):** The `REFERENCE` pin is connected directly to analog ground (GND), converting the floating voltage drop into a ground-referenced potential.
+* **Feedback Loop (Pins 5 & 6):** The `SENSE` pin (Pin 5) is tied directly to the `OUTPUT` pin (Pin 6) to close the internal loop with a fixed gain of 1[cite: 1].
+* **Power Supply (Pins 7 & 4):** Powered directly by the symmetric $\pm12\text{V}$ power supply rail ($+12\text{V}$ on Pin 7 and $-12\text{V}$ on Pin 4).
+
+With this configuration, the AMP03 performs a pure subtraction of the shunt voltages:
+
+$$V_{\text{out, AMP03}} = V_{\text{IN+}} - V_{\text{IN-}} = V_{\text{shunt}}$$
+
+The output provides a clean, ground-referenced millivolt signal ($0 - 0.2\text{V}$) ready to be amplified in the next stage.
 
 ### 4.2. Second Stage: Voltage Amplification (uA741CP)
 
