@@ -238,9 +238,14 @@ The output provides a clean, ground-referenced millivolt signal ($0 - 0.2\text{V
 
 ### 4.2. Second Stage: Voltage Amplification (uA741CP)
 
-Once the AMP03 gives a ground-referenced signal ($0 - 0.2\text{V}$), we need to scale it up to read it by the Arduino anlog reading pin with maximum resolution across its full $0 - 5\text{V}$ range.
+Once the AMP03 gives the $0 - 0.2\text{V}$ ground-referenced signal, we need to scale it up to read it by the Arduino analog reading pin with maximum resolution across its full $0 - 5\text{V}$ range. For this, we have to consider how much we have to amplify the voltage. The answer is simple, as this shunt model shows, when a 2A current is flowing through it, a 0.2V voltage is measured in its terminals. 
 
-For this second stage, a standard UA741CP operational amplifier was set up in a non-inverting amplifier configuration. 
+Apparently, the Arduino can read this $0 - 0.2\text{V}$ signal directly, but the precision will be very low. To understand why:
+
+* **Direct reading without amplification:** The Arduino ADC has 10 bits of resolution (1024 steps for $0 - 5\text{V}$, which means $\approx 4.88\text{ mV}$ per step). If we only input $0.2\text{V}$, the Arduino will only use about 41 steps out of 1024 ($0.2\text{V} / 0.00488\text{V} \approx 41$). This gives a very coarse resolution of $\approx 49\text{ mA}$ per step.
+* **Amplified reading:** Amplifying that signal to the Arduino's 10 bits analog input, we can use the full $0 - 5\text{V}$ range and all 1024 steps, winning precision in the current read down to $\approx 1.95\text{ mA}$ per step.
+
+For this second stage, a standard UA741CP operational amplifier was set up in a non-inverting amplifier configuration.
 
 <p align="center">
   <img src="image_c22d07.png" alt="UA741CP Non-Inverting Stage Schematic" width="70%">
@@ -248,9 +253,9 @@ For this second stage, a standard UA741CP operational amplifier was set up in a 
 
 The connections for this stage are:
 
-* **Non-Inverting Input (IN+, Pin 3):** Connected directly to the output of the AMP03 to receive the $0 - 0.2\text{V}$ signal.
-* **Gain Resistor Network (IN-, Pin 2):** A feedback resistor $R_F = 240\text{ k}\Omega$ connects the output (Pin 6) back to the inverting input (Pin 2), and a resistor $R_2 = 10\text{ k}\Omega$ connects Pin 2 to GND.
-* **Power Supply (VCC+ and VCC-, Pins 7 and 4):** Connected to the $\pm12\text{V}$ symmetric power rails ($+12\text{V}$ on Pin 7 and $-12\text{V}$ on Pin 4) to ensure the op-amp never saturates near 0V.
+* **Non-Inverting Input (IN+, Pin 3):** Connected directly to the output of the AMP03 to receive the $0 - 0.2\text{V}$ signal. This input provides a very high input impedance, so it does not load or drop the voltage coming from the first stage.
+* **Gain Resistor Network (IN-, Pin 2):** A feedback resistor $R_F = 240\text{ k}\Omega$ connects the output (Pin 6) back to the inverting input (Pin 2), and a resistor $R_2 = 10\text{ k}\Omega$ connects Pin 2 to GND. These standard resistor values were selected to get an exact integer gain factor without needing a potentiometer.
+* **Power Supply (VCC+ and VCC-, Pins 7 and 4):** Connected to the $\pm12\text{V}$ symmetric power rails ($+12\text{V}$ on Pin 7 and $-12\text{V}$ on Pin 4) to ensure the op-amp never saturates near 0V. As explained before, because the UA741 is not a rail-to-rail op-amp, if we powered it with a single $0 - 12\text{V}$ supply, the output could not drop below $\approx 1.5 - 2\text{V}$. The negative $-12\text{V}$ rail allows the output to reach 0V cleanly when the motor is stopped.
 * **Output (OUT, Pin 6):** Connected directly to the Arduino's analog input pin (`A0`).
 
 The gain ($A_v$) of this non-inverting setup is calculated with:
@@ -258,6 +263,12 @@ The gain ($A_v$) of this non-inverting setup is calculated with:
 $$A_v = 1 + \frac{R_F}{R_2} = 1 + \frac{240\text{ k}\Omega}{10\text{ k}\Omega} = 1 + 24 = 25$$
 
 With this gain of 25, the $0 - 0.2\text{V}$ signal from the shunt is scaled up to $0 - 5.0\text{V}$, taking full advantage of the Arduino's 10-bit ADC resolution.
+
+Combining the shunt resistor ($R_{\text{shunt}} = 0.1\,\Omega$) and this gain stage ($A_v = 25$), the complete relationship between the motor current and the Arduino reading voltage is:
+
+$$V_{\text{Arduino}} = I_{\text{motor}} \cdot R_{\text{shunt}} \cdot A_v = I_{\text{motor}} \cdot 0.1\,\Omega \cdot 25 = I_{\text{motor}} \cdot 2.5\text{ V/A}$$
+
+This means that for every 1A flowing through the motor, the Arduino reads exactly 2.5V at pin `A0`.
 
 ## 5. Microcontroller Interface and Control Logic
 
