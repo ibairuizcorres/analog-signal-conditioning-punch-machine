@@ -200,11 +200,20 @@ Bridge Rectifier ──> 3300µF Bulk ──> 100nF Ceramic ──> LM1085 ─�
 
 The main objective of the project is to measure the motor current in real time to detect a current peak that could damage the motion system.
 
-To achieve this, a two-stage amplification system has been designed. Why a twho-stage one? 
+To achieve this, a two-stage amplification system has been designed. Why a two-stage one? 
 
-In one hand, as i have already explained, to measure the motor consumed current i used a shunt which creates a voltage drop proportional to the consumed current. This voltage drop it is given in the two sides of the shunt but to amplify that voltage, we need a ground-referenced voltage drop measured between gnd and the shunt. To achive that a diferencial op-amp has been used. 
+On one hand, as I have already explained, to measure the motor consumed current I used a shunt which creates a voltage drop proportional to the consumed current. This voltage drop is given between the two sides of the shunt, but to amplify that voltage, we need a ground-referenced voltage drop. To achieve that, a differential op-amp (AMP03) has been used. 
 
-In the other hand, is needed to amplify that diference. 
+On the other hand, it is needed to amplify that difference. Why? 
+Well, we know that our shunt is a 0.1 ohm shunt ($R = 0.2\text{V} / 2\text{A} = 0.1\,\Omega$). Specifically, this shunt makes a 0.2V voltage drop through its terminals when a 2A current is flowing. 
+
+If we connect this 0.2V directly to the Arduino, the signal is too small for its 0-5V input (ADC), losing a lot of reading resolution. To use the full 0-5V range of the Arduino, we need to amplify the 0.2V signal by 25 times:
+
+$$\text{Gain} = \frac{5.0\text{ V}}{0.2\text{ V}} = 25$$
+
+Using the second op-amp ($\mu$A741CP) with a gain of 25, when 2A flows through the motor, the Arduino receives exactly 5V. With this setup, the Arduino calculates the real current from the read voltage using this relation:
+
+$$\text{Current} = \frac{\text{Voltage}}{2.5}$$
 
 ### 4.1. First Stage: Differential Sensing (AMP03)
 
