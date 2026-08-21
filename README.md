@@ -1,6 +1,6 @@
 # Analog Signal Conditioning and Control - Scaled Punching Machine
 
-This project covers the design, calculation, and implementation of the power supply that feeds a data acquisition and control system for a scaled industrial punching machine. The development focuses on the electrical and electronic hardware. It solves the problem of measuring a DC motor's current in a noisy environment using analog electronics and digital processing.
+In this project, I cover the design, calculation, and implementation of the power supply that feeds a data acquisition and control system for a scaled industrial punching machine. My development focuses on the electrical and electronic hardware, solving the problem of measuring a DC motor's current in a noisy environment using analog electronics and digital processing.
 
 <p align="center">
   <img src="4_Media/punching_machine_prototype.jpg" alt="Prototype side" width="35%" style="vertical-align: middle;">
@@ -38,7 +38,7 @@ While my teammates focused on the mechanical frames, material tests, and vibrati
 
 ## 1. Project Overview
 
-In industrial factories, monitoring motor current is very important to find machine faults and protect the system from overloads. The main goal of this project was to measure the real-time current of the punching machine's motor during its work cycle. In this case, the objective of measuring the current was to stop the machine if the power exceeds a safe limit. This current is read by an Arduino Uno R3, which controls a relay to switch the motor on or off. Additionally, the project required the possibility to change the motor's rotation direction. This specific part will be explained in broad strokes because it was a shared task with my team.
+In industrial factories, monitoring motor current is very important to find machine faults and protect the system from overloads. My main goal in this project was to measure the real-time current of the punching machine's motor during its work cycle. In this case, my objective was to stop the machine if the power exceeds a safe limit. This current is read by an Arduino Uno R3, which controls a relay to switch the motor on or off. Additionally, the project required the possibility to change the motor's rotation direction. I'll explain this specific part in broad strokes because it was a shared task with my team.
 
 To do this, I designed and built an electronic system with three main parts:
 
@@ -50,7 +50,7 @@ To do this, I designed and built an electronic system with three main parts:
 
 ## 2. Technical Specifications
 
-It was selected the following hardware components and parameters to make the system accurate:
+I selected the following hardware components and parameters to make the system accurate:
 
 | System Component | Technical Specification | Primary Role |
 | :--- | :--- | :--- |
@@ -65,7 +65,7 @@ It was selected the following hardware components and parameters to make the sys
 
 ## 3. Symmetric Power Supply Design (±12V)
 
-In this section is going to be shown the entire calculation, design and construction of the punching machine's power supply.
+In this section, I show the entire calculation, design, and construction of the punching machine's power supply.
 
 <p align="center">
   <img src="4_Media/power_supplyer.jpg" alt="Symmetric Power Supply" width="42%">
@@ -73,7 +73,7 @@ In this section is going to be shown the entire calculation, design and construc
 
 First of all is important to know that this power supply is different from standard ones. In this case, the power supply provides a +12/-12V, that makes a 24V of voltage drop. But, why is this configuration used instead of a +12V/0V one? With that configuration, the motor can be supplied with a 12V voltage and apparently the two op-amps too.
 
-Well, these op-amps, which are going to be introduced in the Section 4, are a common type known by the name of **non** rail-to-rail. This means that the op-amp output voltage can't be the same as the op-amp minimum supply voltage. Moreover, the voltage will never reach that minimum voltage because of the saturation voltage of these op-amps. Normally, this saturation voltage is about 1.5 and 2V, so, to get a 0-12V output from the amplifiers, a -2/12V power supply is needed.
+Well, these op-amps, which I introduce in Section 4, are a common type known by the name of **non** rail-to-rail. This means that the op-amp output voltage can't be the same as the op-amp minimum supply voltage. Moreover, the voltage will never reach that minimum voltage because of the saturation voltage of these op-amps. Normally, this saturation voltage is about 1.5 and 2V, so, to get a 0-12V output from the amplifiers, a -2/12V power supply is needed.
 
 ### 3.1. Block Diagram and Operating Principle
 
@@ -101,13 +101,13 @@ The inconvenience of this type is that all the excess voltage is dissipated as h
 
 $$P = (19 - 12) \cdot 1 = 7\text{W}$$
 
-* **Switching DC power supply:** They are the modern ones, allow the user to reach high output powers generating low heat dissipation. they are the most used power supplies, from the PC's power supply to a electric car one. I could go on and on explaining these ones but that could be enough for another article, so, what type has been chosen in this project?
+* **Switching DC power supply:** They are the modern ones, allow the user to reach high output powers generating low heat dissipation. they are the most used power supplies, from the PC's power supply to a electric car one. I could go on and on explaining these ones but that could be enough for another article, so, what type did I choose for this project?
 
-The chosen one is the linear DC power supply because of its simplicity and the low noise generated. The switching ones, are more complex to understand and emit much noise compared to the linear ones.
+I chose the linear DC power supply for its simplicity and the low noise generated. The switching ones, are more complex to understand and emit much noise compared to the linear ones.
 
 ### 3.2. Component Selection and Calculations
 
-To build a reliable system, the physical power supply was assembled designed for constant and high-stress operation. This means that all the chosen components have been oversized to promise a long working time. This section explains which components were selected and why, along with some calculations for the oversizing.
+To build a reliable system, I assembled and designed the physical power supply for constant and high-stress operation. This means that I oversized all the chosen components to promise a long working time. In this section, I explain which components I selected and why, along with some calculations for the oversizing.
 
 <p align="center">
   <img src="4_Media/assembled_power_supply_shield.jpg" alt="Assembled Power Supply Shield" width="50%">
@@ -115,35 +115,35 @@ To build a reliable system, the physical power supply was assembled designed for
 
 #### Power Calculations and Regulator Selection
 
-The component selection was driven by the power requirements of the main actuator, the 12V, 20W brush DC motor.
+My component selection was driven by the power requirements of the main actuator, the 12V, 20W brush DC motor.
 
-The nominal current consumed by the motor is theoretically calculated as follows:
+I theoretically calculated the nominal current consumed by the motor as follows:
 
 $$I_{\text{nominal}} = \frac{P}{V} = \frac{20\text{ W}}{12\text{ V}} \approx 1.67\text{ A}$$
 
-However, during physical testing in the laboratory, it was measured a diferent current consumption of the motor under different loads.
+However, during physical testing in the laboratory, I measured a diferent current consumption of the motor under different loads.
 
 * **No-load current ($I_{\text{no-load}}$):** Measured between 0.2A and 0.3A when running freely.
 * **Stall current ($I_{\text{stall}}$):** Measured at 2.19A when the motor is completely blocked (representing the absolute worst-case scenario if the punch gets mechanically blocked).
 
 While a standard 1A or 1.5A regulator can be seem enough for the nominal operating conditions, it would immediately fail during a mechanical block event.
-For this reason, it was selected the following regulators:
+For this reason, I selected the following regulators:
 
 * **LM1085IT-12 (+12V Rail):** This is a Low Dropout regulator (In this case is not relevant the type of regulator, becuase of the high voltage drop on the regulator) rated for up to 3A. It provides a reliable safety margin even under the worst-case stall conditions:
 
 $$\text{Safety Margin} = \frac{3\text{ A}}{2.19\text{ A}} \approx 1.37$$
 
-This means that even if the mechanical punch gets completely blocked and the motor stops consuming 2.19A, the regulator still operates with a 37% safety margin. This prevents the regulator from failing, keeping the control electronics alive and giving the Arduino enough time to detect the current spike. A passive aluminum heatsink was also paired with it to manage the heat generated during these continuous load periods. The dimension and characteristics of the heatsink they weren't calculated because of the current safety margin.
+This means that even if the mechanical punch gets completely blocked and the motor stops consuming 2.19A, the regulator still operates with a 37% safety margin. This prevents the regulator from failing, keeping the control electronics alive and giving the Arduino enough time to detect the current spike. I also paired it with a passive aluminum heatsink to manage the heat generated during these continuous load periods. I didn't calculate the dimensions and characteristics of the heatsink because of the current safety margin.
 
-* **7912 (-12V Rail):** Since the negative rail is dedicated exclusively to powering the operational amplifiers (UA741CP and AMP03), the current demand on this side is extremely low (typically under 10mA). A standard 1A negative regulator was selected. Because the actual load is less than 1% of the regulator's limit, it operates under no thermal stress and runs completely cool.
+* **7912 (-12V Rail):** Since the negative rail is dedicated exclusively to powering the operational amplifiers (UA741CP and AMP03), the current demand on this side is extremely low (typically under 10mA). I selected a standard 1A negative regulator. Because the actual load is less than 1% of the regulator's limit, it operates under no thermal stress and runs completely cool.
 
 #### Filtering and Decoupling Stage
 
-To ensure a clean DC output and shield the sensitive analog signals from motor noise, we implemented a filtering stage in the power supply. This design relies on the teamwork between different capacitor technologies, placing them in a specific electrical and physical order.
+To ensure a clean DC output and shield the sensitive analog signals from motor noise, I implemented a filtering stage in the power supply. This design relies on the teamwork between different capacitor technologies, placing them in a specific electrical and physical order.
 
 ##### Ripple Voltage Calculation
 
-The main filtering is compound by the large electrolytic capacitors ($3300\,\mu\text{F}$). To justify this capacity mathematically and ensure the voltage regulators never drop out of regulation, we calculate the peak-to-peak ripple voltage ($V_{r(pp)}$) using the full-wave rectified linear approximation:
+The main filtering is compound by the large electrolytic capacitors ($3300\,\mu\text{F}$). To justify this capacity mathematically and ensure the voltage regulators never drop out of regulation, I calculate the peak-to-peak ripple voltage ($V_{r(pp)}$) using the full-wave rectified linear approximation:
 
 $$V_{r(pp)} = \frac{I_L}{f \cdot C}$$
 
@@ -154,7 +154,7 @@ Where:
 
 $$V_{r(pp)} = \frac{1.67\text{ A}}{100\text{ Hz} \cdot 3300 \cdot 10^{-6}\text{ F}} \approx 5.06\text{ V}$$
 
-Since our unregulated peak voltage ($V_{\text{peak}}$) is approximately $19\text{ V}$, the minimum instantaneous voltage ($V_{\text{min}}$) feeding the regulator input during the discharge phase is:
+Since my unregulated peak voltage ($V_{\text{peak}}$) is approximately $19\text{ V}$, the minimum instantaneous voltage ($V_{\text{min}}$) feeding the regulator input during the discharge phase is:
 
 $$V_{\text{min}} = V_{\text{peak}} - V_{r(pp)} = 19\text{ V} - 5.06\text{ V} = 13.94\text{ V}$$
 
@@ -198,16 +198,16 @@ Bridge Rectifier ──> 3300µF Bulk ──> 100nF Ceramic ──> LM1085 ─�
 
 ## 4. Analog Signal Conditioning Stage
 
-The main objective of the project is to measure the motor current in real time to detect a current peak that could damage the motion system.
+My main objective in this project was to measure the motor current in real time to detect a current peak that could damage the motion system.
 
-To achieve this, a two-stage amplification system has been designed. Why a two-stage one? 
+To achieve this, I designed a two-stage amplification system. Why a two-stage one?
 
-On one hand, as I have already explained, to measure the motor consumed current I used a shunt which creates a voltage drop proportional to the consumed current. This voltage drop is given between the two sides of the shunt, but to amplify that voltage, we need a ground-referenced voltage drop. To achieve that, a differential op-amp (AMP03) has been used. 
+On one hand, as I have already explained, to measure the motor consumed current I used a shunt which creates a voltage drop proportional to the consumed current. This voltage drop is given between the two sides of the shunt, but to amplify that voltage, I need a ground-referenced voltage drop. To achieve that, I used a differential op-amp (AMP03).
 
-On the other hand, it is needed to amplify that difference. Why? 
-Well, we know that our shunt is a 0.1 ohm shunt ($R = 0.2\text{V} / 2\text{A} = 0.1\,\Omega$). Specifically, this shunt makes a 0.2V voltage drop through its terminals when a 2A current is flowing. 
+On the other hand, I need to amplify that difference. Why?
+Well, I know my shunt is a 0.1 ohm shunt ($R = 0.2\text{V} / 2\text{A} = 0.1\,\Omega$). Specifically, this shunt makes a 0.2V voltage drop through its terminals when a 2A current is flowing.
 
-If we connect this 0.2V directly to the Arduino, the signal is too small for its 0-5V input (ADC), losing a lot of reading resolution. To use the full 0-5V range of the Arduino, we need to amplify the 0.2V signal by 25 times:
+If I connect this 0.2V directly to the Arduino, the signal is too small for its 0-5V input (ADC), losing a lot of reading resolution. To use the full 0-5V range of the Arduino, I need to amplify the 0.2V signal by 25 times:
 
 $$\text{Gain} = \frac{5.0\text{ V}}{0.2\text{ V}} = 25$$
 
@@ -223,12 +223,12 @@ Standard operational amplifiers can be configured in many ways using external re
   <img src="4_Media/a.png" alt="AMP03 Differential Sensing Stage" width="70%">
 </p>
 
-The electrical connections for this first stage were wired like this:
+I wired the electrical connections for this first stage like this:
 
-* **Differential Inputs (Pins 2 and 3):** The inverting input (-IN, Pin 2) and non-inverting input (+IN, Pin 3) are connected directly across the two terminals of the HOBUT shunt resistor.
-* **Ground Reference (Pin 1):** The REFERENCE pin is connected directly to analog ground (GND), converting the floating voltage drop into a ground-referenced potential.
-* **Feedback Loop (Pins 5 and 6):** The SENSE pin (Pin 5) is tied directly to the OUTPUT pin (Pin 6) to close the internal loop with a fixed gain of 1[cite: 1].
-* **Power Supply (Pins 7 and 4):** Powered directly by the symmetric $\pm12\text{V}$ power supply rail ($+12\text{V}$ on Pin 7 and $-12\text{V}$ on Pin 4).
+* **Differential Inputs (Pins 2 and 3):** I connected the inverting input (-IN, Pin 2) and non-inverting input (+IN, Pin 3) directly across the two terminals of the HOBUT shunt resistor.
+* **Ground Reference (Pin 1):** I connected the REFERENCE pin directly to analog ground (GND), converting the floating voltage drop into a ground-referenced potential.
+* **Feedback Loop (Pins 5 and 6):** I tied the SENSE pin (Pin 5) directly to the OUTPUT pin (Pin 6) to close the internal loop with a fixed gain of 1[cite: 1].
+* **Power Supply (Pins 7 and 4):** I powered it directly from the symmetric $\pm12\text{V}$ power supply rail ($+12\text{V}$ on Pin 7 and $-12\text{V}$ on Pin 4).
 
 With this configuration, the AMP03 performs a pure subtraction of the shunt voltages:
 
@@ -238,35 +238,33 @@ The output provides a clean, ground-referenced millivolt signal ($0 - 0.2\text{V
 
 ### 4.2. Second Stage: Voltage Amplification (uA741CP)
 
-Once the AMP03 gives the $0 - 0.2\text{V}$ ground-referenced signal, we need to scale it up to read it by the Arduino analog reading pin with maximum resolution across its full $0 - 5\text{V}$ range. For this, we have to consider how much we have to amplify the voltage. The answer is simple, as this shunt model shows, when a 2A current is flowing through it, a 0.2V voltage is measured in its terminals. 
+Once the AMP03 gives the $0 - 0.2\text{V}$ ground-referenced signal, I need to scale it up to be read by the Arduino analog pin with maximum resolution across its full $0 - 5\text{V}$ range. For this, I have to consider how much I have to amplify the voltage. The answer is simple, as this shunt model shows, when a 2A current is flowing through it, a 0.2V voltage is measured in its terminals. 
 
-Apparently, the Arduino can read this $0 - 0.2\text{V}$ signal directly, but the precision will be very low. To understand why:
+Technically, the Arduino can read this $0 - 0.2\text{V}$ signal directly, but the precision will be very low. To understand why:
 
-* **Direct reading without amplification:** The Arduino ADC has 10 bits of resolution (1024 steps for $0 - 5\text{V}$, which means $\approx 4.88\text{ mV}$ per step). If we only input $0.2\text{V}$, the Arduino will only use about 41 steps out of 1024 ($0.2\text{V} / 0.00488\text{V} \approx 41$). This gives a very coarse resolution of $\approx 49\text{ mA}$ per step.
-* **Amplified reading:** Amplifying that signal to the Arduino's 10 bits analog input, we can use the full $0 - 5\text{V}$ range and all 1024 steps, winning precision in the current read down to $\approx 1.95\text{ mA}$ per step.
+* **Direct reading without amplification:** The Arduino ADC has 10 bits of resolution (1024 steps for $0 - 5\text{V}$, which means $\approx 4.88\text{ mV}$ per step). If I only input $0.2\text{V}$, the Arduino will only use about 41 steps out of 1024 ($0.2\text{V} / 0.00488\text{V} \approx 41$). This gives a very coarse resolution of $\approx 49\text{ mA}$ per step.
+* **Amplified reading:** Amplifying that signal to the Arduino's 10 bits analog input, I can use the full $0 - 5\text{V}$ range and all 1024 steps, gaining precision in the current read down to $\approx 1.95\text{ mA}$ per step.
 
-For this second stage, a standard UA741CP operational amplifier was set up in a non-inverting amplifier configuration.
+For this second stage, I set up a standard UA741CP operational amplifier in a non-inverting amplifier configuration.
 
 <p align="center">
   <img src="4_Media/b.png" alt="UA741CP Non-Inverting Stage Schematic" width="70%">
 </p>
 
-The connections for this stage are:
+I made the following connections for this stage:
 
-* **Non-Inverting Input (IN+, Pin 3):** Connected directly to the output of the AMP03 to receive the $0 - 0.2\text{V}$ signal. This input provides a very high input impedance, so it does not load or drop the voltage coming from the first stage.
-* **Gain Resistor Network (IN-, Pin 2):** A feedback resistor $R_F = 240\text{ k}\Omega$ connects the output (Pin 6) back to the inverting input (Pin 2), and a resistor $R_2 = 10\text{ k}\Omega$ connects Pin 2 to GND. These standard resistor values were selected to get an exact integer gain factor without needing a potentiometer.
-* **Power Supply (VCC+ and VCC-, Pins 7 and 4):** Connected to the $\pm12\text{V}$ symmetric power rails ($+12\text{V}$ on Pin 7 and $-12\text{V}$ on Pin 4) to ensure the op-amp never saturates near 0V. As explained before, because the UA741 is not a rail-to-rail op-amp, if we powered it with a single $0 - 12\text{V}$ supply, the output could not drop below $\approx 1.5 - 2\text{V}$. The negative $-12\text{V}$ rail allows the output to reach 0V cleanly when the motor is stopped.
-* **Output (OUT, Pin 6):** Connected directly to the Arduino's analog input pin (A0).
+* **Non-Inverting Input (IN+, Pin 3):** I connected this directly to the output of the AMP03 to receive the $0 - 0.2\text{V}$ signal. This input provides a very high input impedance, so it does not load or drop the voltage coming from the first stage.
+* **Gain Resistor Network (IN-, Pin 2):** I connected a feedback resistor $R_F = 240\text{ k}\Omega$ from the output (Pin 6) back to the inverting input (Pin 2), and a resistor $R_2 = 10\text{ k}\Omega$ from Pin 2 to GND. I selected these standard resistor values to get an exact integer gain factor without needing a potentiometer.
+* **Power Supply (VCC+ and VCC-, Pins 7 and 4):** I connected this to the $\pm12\text{V}$ symmetric power rails ($+12\text{V}$ on Pin 7 and $-12\text{V}$ on Pin 4) to ensure the op-amp never saturates near 0V. As I explained before, because the UA741 is not a rail-to-rail op-amp, if I had powered it with a single $0 - 12\text{V}$ supply, the output could not drop below $\approx 1.5 - 2\text{V}$. The negative $-12\text{V}$ rail allows the output to reach 0V cleanly when the motor is stopped.
+* **Output (OUT, Pin 6):** I connected this directly to the Arduino's analog input pin (A0).
 
 This is how the non inverter amplifier works:
 
 <p align="center">
-  <img src="4_Media/c.png" alt="Op-amp Configurated As Non Inverter" width="70%">
+  <img src="4_Media/c.png" alt="Op-amp Configured As Non Inverter Amplifier" width="70%">
 </p>
 
-
-
-The gain ($A_v$) of this non-inverting setup is calculated with:
+I calculated the gain ($A_v$) of this non-inverting setup with:
 
 $$A_v = 1 + \frac{R_F}{R_2} = 1 + \frac{240\text{ k}\Omega}{10\text{ k}\Omega} = 1 + 24 = 25$$
 
@@ -276,7 +274,7 @@ Combining the shunt resistor ($R_{\text{shunt}} = 0.1\,\Omega$) and this gain st
 
 $$V_{\text{Arduino}} = I_{\text{motor}} \cdot R_{\text{shunt}} \cdot A_v = I_{\text{motor}} \cdot 0.1\,\Omega \cdot 25 = I_{\text{motor}} \cdot 2.5\text{ V/A}$$
 
-This means that for every 1A flowing through the motor, the Arduino reads exactly 2.5V at pin `A0`.
+This means that for every 1A flowing through the motor, the Arduino reads exactly 2.5V at pin A0.
 
 ## 5. Microcontroller Interface and Control Logic
 
@@ -285,4 +283,3 @@ This means that for every 1A flowing through the motor, the Arduino reads exactl
 
 
 ### 5.2. Overcurrent Protection Logic
-
