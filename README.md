@@ -256,7 +256,15 @@ The connections for this stage are:
 * **Non-Inverting Input (IN+, Pin 3):** Connected directly to the output of the AMP03 to receive the $0 - 0.2\text{V}$ signal. This input provides a very high input impedance, so it does not load or drop the voltage coming from the first stage.
 * **Gain Resistor Network (IN-, Pin 2):** A feedback resistor $R_F = 240\text{ k}\Omega$ connects the output (Pin 6) back to the inverting input (Pin 2), and a resistor $R_2 = 10\text{ k}\Omega$ connects Pin 2 to GND. These standard resistor values were selected to get an exact integer gain factor without needing a potentiometer.
 * **Power Supply (VCC+ and VCC-, Pins 7 and 4):** Connected to the $\pm12\text{V}$ symmetric power rails ($+12\text{V}$ on Pin 7 and $-12\text{V}$ on Pin 4) to ensure the op-amp never saturates near 0V. As explained before, because the UA741 is not a rail-to-rail op-amp, if we powered it with a single $0 - 12\text{V}$ supply, the output could not drop below $\approx 1.5 - 2\text{V}$. The negative $-12\text{V}$ rail allows the output to reach 0V cleanly when the motor is stopped.
-* **Output (OUT, Pin 6):** Connected directly to the Arduino's analog input pin (`A0`).
+* **Output (OUT, Pin 6):** Connected directly to the Arduino's analog input pin (A0).
+
+This is how the non inverter amplifier works:
+
+<p align="center">
+  <img src="4_Media/c.png" alt="Op-amp Configurated As Non Inverter" width="70%">
+</p>
+
+
 
 The gain ($A_v$) of this non-inverting setup is calculated with:
 
