@@ -248,7 +248,7 @@ Apparently, the Arduino can read this $0 - 0.2\text{V}$ signal directly, but the
 For this second stage, a standard UA741CP operational amplifier was set up in a non-inverting amplifier configuration.
 
 <p align="center">
-  <img src="4_Mediab.png" alt="UA741CP Non-Inverting Stage Schematic" width="70%">
+  <img src="4_Media/b.png" alt="UA741CP Non-Inverting Stage Schematic" width="70%">
 </p>
 
 The connections for this stage are:
