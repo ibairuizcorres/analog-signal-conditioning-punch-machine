@@ -16,6 +16,12 @@ In this project, I cover the design, calculation, and implementation of the powe
 - [3. Symmetric Power Supply Design (±12V)](#3-symmetric-power-supply-design-12v)
   - [3.1. Block Diagram and Operating Principle](#31-block-diagram--operating-principle)
   - [3.2. Component Selection and Calculations](#32-component-selection--calculations)
+- [4. Analog Signal Conditioning Stage](#4-analog-signal-conditioning-stage)
+  - [4.1. First Stage: Differential Sensing (AMP03)](#41-first-stage-differential-sensing-amp03)
+  - [4.2. Second Stage: Voltage Amplification (uA741CP)](#42-second-stage-voltage-amplification-ua741cp)
+- [5. Microcontroller Interface and Control Logic](#5-microcontroller-interface--control-logic)
+  - [5.1. Signal Processing and Calibration](#51-signal-processing--calibration)
+  - [5.2. Overcurrent Protection Logic](#52-overcurrent-protection-logic)
 
 ---
 
@@ -164,8 +170,7 @@ $$V_{\text{in(min)}} = V_{\text{out}} + V_{\text{dropout}} = 12\text{ V} + 1.3\t
 
 Because $13.94\text{ V} > 13.3\text{ V}$, this calculation mathematically proves that the input voltage will never drop below the regulator's minimum threshold, ensuring a completely stable and noise-free $12\text{ V}$ output.
 
-
-**Capacitor Teamwork and Order**
+##### Capacitor Teamwork and Order
 
 While assembling the power supply board in the lab, I did it in two steps:
 
@@ -196,6 +201,8 @@ Bridge Rectifier ──> 3300µF Bulk ──> 100nF Ceramic ──> LM1085 ─�
 - **100 nF Ceramic Disc (104)** — placed right next to the regulator's input pin (Vin), to filter high-frequency line noise and stop parasitic oscillations before they even reach the regulator.
 - **27 µF Electrolytic** — placed right at the regulator's output pin (Vout), to supply quick charge during motor current spikes and keep the feedback loop stable.
 
+---
+
 ## 4. Analog Signal Conditioning Stage
 
 My main objective in this project was to measure the motor current in real time to detect a current peak that could damage the motion system.
@@ -217,7 +224,7 @@ $$\text{Current} = \frac{\text{Voltage}}{2.5}$$
 
 ### 4.1. First Stage: Differential Sensing (AMP03)
 
-Standard operational amplifiers can be configured in many ways using external resistors. However, the AMP03 is a difference amplifier designed specifically for precision unity gain ($G = 1$). 
+Standard operational amplifiers can be configured in many ways using external resistors. However, the AMP03 is a difference amplifier designed specifically for precision unity gain ($G = 1$).
 
 <p align="center">
   <img src="4_Media/a.png" alt="AMP03 Differential Sensing Stage" width="70%">
@@ -238,7 +245,7 @@ The output provides a clean, ground-referenced millivolt signal ($0 - 0.2\text{V
 
 ### 4.2. Second Stage: Voltage Amplification (uA741CP)
 
-Once the AMP03 gives the $0 - 0.2\text{V}$ ground-referenced signal, I need to scale it up to be read by the Arduino analog pin with maximum resolution across its full $0 - 5\text{V}$ range. For this, I have to consider how much I have to amplify the voltage. The answer is simple, as this shunt model shows, when a 2A current is flowing through it, a 0.2V voltage is measured in its terminals. 
+Once the AMP03 gives the $0 - 0.2\text{V}$ ground-referenced signal, I need to scale it up to be read by the Arduino analog pin with maximum resolution across its full $0 - 5\text{V}$ range. For this, I have to consider how much I have to amplify the voltage. The answer is simple, as this shunt model shows, when a 2A current is flowing through it, a 0.2V voltage is measured in its terminals.
 
 Technically, the Arduino can read this $0 - 0.2\text{V}$ signal directly, but the precision will be very low. To understand why:
 
@@ -261,7 +268,7 @@ I made the following connections for this stage:
 This is how the non inverter amplifier works:
 
 <p align="center">
-  <img src="4_Media/c.png" alt="Op-amp Configured As Non Inverter Amplifier" width="70%">
+  <img src="4_Media/c.png" alt="Op-amp Configured As Non Inverter Amplifier" width="35%">
 </p>
 
 I calculated the gain ($A_v$) of this non-inverting setup with:
@@ -276,10 +283,10 @@ $$V_{\text{Arduino}} = I_{\text{motor}} \cdot R_{\text{shunt}} \cdot A_v = I_{\t
 
 This means that for every 1A flowing through the motor, the Arduino reads exactly 2.5V at pin A0.
 
+---
+
 ## 5. Microcontroller Interface and Control Logic
 
-
 ### 5.1. Signal Processing and Calibration
-
 
 ### 5.2. Overcurrent Protection Logic
