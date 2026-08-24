@@ -227,7 +227,7 @@ $$\text{Current} = \frac{\text{Voltage}}{2.5}$$
 Standard operational amplifiers can be configured in many ways using external resistors. However, the AMP03 is a difference amplifier designed specifically for precision unity gain ($G = 1$).
 
 <p align="center">
-  <img src="4_Media/a.png" alt="AMP03 Differential Sensing Stage" width="70%">
+  <img src="4_Media/AMP03-differential-sensing-stage.png" alt="AMP03 Differential Sensing Stage" width="70%">
 </p>
 
 I wired the electrical connections for this first stage like this:
@@ -255,7 +255,7 @@ Technically, the Arduino can read this $0 - 0.2\text{V}$ signal directly, but th
 For this second stage, I set up a standard UA741CP operational amplifier in a non-inverting amplifier configuration.
 
 <p align="center">
-  <img src="4_Media/b.png" alt="UA741CP Non-Inverting Stage Schematic" width="70%">
+  <img src="4_Media/UA741CP-non-inverting-stage-schematic.png" alt="UA741CP Non-Inverting Stage Schematic" width="70%">
 </p>
 
 I made the following connections for this stage:
@@ -268,7 +268,7 @@ I made the following connections for this stage:
 This is how the non inverter amplifier works:
 
 <p align="center">
-  <img src="4_Media/c.png" alt="Op-amp Configured As Non Inverter Amplifier" width="35%">
+  <img src="4_Media/Op-amp-configured-as-non-inverter-amplifier.png" alt="Op-amp Configured As Non Inverter Amplifier" width="35%">
 </p>
 
 I calculated the gain ($A_v$) of this non-inverting setup with:
