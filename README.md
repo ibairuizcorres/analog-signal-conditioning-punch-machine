@@ -287,6 +287,73 @@ This means that for every 1A flowing through the motor, the Arduino reads exactl
 
 ## 5. Microcontroller Interface and Control Logic
 
+This is the last part of the electronic system, the digital control. The Arduino Uno R3 works like the brain of the machine, reading all the time the analog signal from the conditioning stage and deciding if the DC motor has to move or stop, using the digital pins 7 and 8.
+
 ### 5.1. Signal Processing and Calibration
 
+The Arduino reads the amplified voltage signal in the analog pin `A0`. To keep the system fast to react to the buttons and to the safety events, I decided to not use the `delay()` function, because it blocks the whole program. Instead, I used a non-blocking timer with the `millis()` function, to read the sensor exactly every 50 milliseconds.
+
+Once the raw value (from 0 to 1023) is read, I need to convert it into a real current value. This is done in two simple steps:
+
+1. **ADC to Voltage:** The 10 bit reading is mapped to the 0 - 5.0V range.
+2. **Voltage to Current:** As I calculated before in the hardware section, every 1A of motor current makes exactly 2.5V in the Arduino input. So, I only have to divide the read voltage by 2.5 to get the real Amperes.
+
+This is the simplified code I used for the reading and the calibration:
+
+```cpp
+unsigned long lastReadTime = 0;
+const unsigned long READ_INTERVAL = 50; // Read every 50 ms
+float corriente = 0.0;
+
+void loop() {
+  // Check if 50ms have passed
+  if (millis() - lastReadTime >= READ_INTERVAL) {
+    lastReadTime = millis();
+
+    // 1. Read the analog pin A0
+    int lectura = analogRead(A0);
+
+    // 2. Convert ADC value to Voltage (0 - 5V)
+    float voltaje = lectura * (5.0 / 1023.0);
+
+    // 3. Calculate real current based on hardware gain (2.5 V/A)
+    corriente = voltaje / 2.5;
+  }
+}
+```
+
 ### 5.2. Overcurrent Protection Logic
+
+The main safety feature of the punching machine is the software overcurrent protection. If the punch hits a material too thick, or gets mechanically stuck, the DC motor is going to stall. When a motor stalls, it asks for a big spike of electrical current.
+
+To avoid the mechanical system breaking, or the motor burning, the Arduino is always checking the `corriente` variable. I set the safety limit to 2.50 A.
+
+If the current gets to this value or more, the Arduino triggers a safety sequence immediately:
+
+1. It calls the `detenerMotor()` function, that writes a `LOW` state to pins 7 and 8, cutting the power to the motor driver.
+2. It sets a boolean flag called `motorProtegido` to `true`. This works like a software lock.
+3. It disables the automatic and the manual modes. The machine is not going to move again until the operator clears the error, pressing the STOP or the AUTO button.
+
+This is the simplified safety code:
+
+```cpp
+bool motorProtegido = false;
+
+void loop() {
+  // ... (Current reading logic here) ...
+
+  // OVERCURRENT PROTECTION TRIGGER
+  if (corriente >= 2.5 && !motorProtegido) {
+    detenerMotor();           // Cut power immediately
+    modoAuto = false;         // Cancel automatic mode
+    modoManual = false;       // Cancel manual mode
+    motorProtegido = true;    // ACTIVATE SOFTWARE LOCK
+  }
+}
+
+// Motor control function
+void detenerMotor() {
+  digitalWrite(7, LOW);
+  digitalWrite(8, LOW);
+}
+```
